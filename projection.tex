@@ -1,0 +1,452 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{parskip}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}
+
+\title{When is a Projection Orthogonal? \\ The Role of Symmetry}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\Large
+
+
+\section*{Introduction}
+
+In linear algebra, a \textbf{projection} is a linear transformation that “sends” vectors onto a subspace and leaves vectors in that subspace unchanged. Formally, a square matrix \( P \) is a \textbf{projection} if
+\[
+P^2 = P.
+\]
+This means that applying the projection twice is the same as applying it once—once you’re on the subspace, you stay there.
+
+But not all projections are created equal. Some are \textbf{orthogonal} (they drop a perpendicular from a vector to the subspace), while others are \textbf{oblique} (they slide along a slanted direction). 
+
+The central question is:
+\begin{center}
+\textit{How can we tell, just by looking at the matrix \( P \), whether the projection is orthogonal?}
+\end{center}
+
+The answer is beautiful and simple:
+
+\begin{theorem}
+Let \( P \) be an \( n \times n \) real matrix such that \( P^2 = P \) (i.e., \( P \) is a projection).  
+Then \( P \) represents an \textbf{orthogonal projection} if and only if \( P \) is \textbf{symmetric}, meaning
+\[
+P^\top = P.
+\]
+\end{theorem}
+
+We now prove this in two parts, with clear geometric reasoning.
+
+\section*{Part 1: If \( P \) is symmetric and a projection, then it is orthogonal}
+
+Assume that \( P^2 = P \) and \( P^\top = P \). We want to show that the projection is orthogonal.
+
+What does “orthogonal projection” mean geometrically?  .
+It means that for any vector \( \mathbf{x} \), the error \( \mathbf{x} - P\mathbf{x} \) is perpendicular to the projected vector \( P\mathbf{x} \).  
+Equivalently, the entire \textbf{column space} of \( P \) (the subspace we’re projecting onto) is perpendicular to the \textbf{null space} of \( P \) (the directions along which we project).
+
+
+
+
+\section*{Statement}
+
+Let \( P \) be an \( n \times n \) real matrix that is a \textbf{projection}, meaning \( P^2 = P \).  
+For any vector \( \mathbf{x} \in \mathbb{R}^n \), define the \textbf{error} (or \textbf{residual}) as
+\[
+\mathbf{e} = \mathbf{x} - P\mathbf{x}.
+\]
+Then \( \mathbf{e} \in \operatorname{Nul}(P) \); that is, \( P\mathbf{e} = \mathbf{0} \).
+
+\section*{Proof}
+
+We compute \( P\mathbf{e} \) directly:
+\[
+P\mathbf{e} = P(\mathbf{x} - P\mathbf{x}) = P\mathbf{x} - P(P\mathbf{x}) = P\mathbf{x} - P^2\mathbf{x}.
+\]
+Since \( P \) is a projection, \( P^2 = P \). Substituting this in gives
+\[
+P\mathbf{e} = P\mathbf{x} - P\mathbf{x} = \mathbf{0}.
+\]
+Therefore, \( \mathbf{e} \in \operatorname{Nul}(P) \).
+
+\section*{Intuition}
+
+A projection \( P \) leaves vectors in its column space unchanged: if \( \mathbf{y} \in \operatorname{Col}(P) \), then \( P\mathbf{y} = \mathbf{y} \).  
+The error \( \mathbf{e} = \mathbf{x} - P\mathbf{x} \) is the part of \( \mathbf{x} \) that is ``left over'' after removing the component that lies in \( \operatorname{Col}(P) \).  
+Since this leftover part is annihilated by \( P \) (i.e., sent to zero), it must belong to the null space of \( P \).
+
+\section*{Example}
+
+Let
+\[
+P = \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix}, \quad \mathbf{x} = \begin{bmatrix} 3 \\ 4 \end{bmatrix}.
+\]
+Then
+\[
+P\mathbf{x} = \begin{bmatrix} 3 \\ 0 \end{bmatrix}, \quad
+\mathbf{e} = \mathbf{x} - P\mathbf{x} = \begin{bmatrix} 0 \\ 4 \end{bmatrix}.
+\]
+Applying \( P \) to the error:
+\[
+P\mathbf{e} = \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix},
+\]
+so indeed \( \mathbf{e} \in \operatorname{Nul}(P) \).
+
+\section*{Conclusion}
+
+This simple identity—\( P(\mathbf{x} - P\mathbf{x}) = \mathbf{0} \)—is a direct consequence of the defining property \( P^2 = P \).  
+It underpins the fundamental decomposition
+\[
+\mathbb{R}^n = \operatorname{Col}(P) \oplus \operatorname{Nul}(P)
+\]
+that holds for every projection matrix \( P \).
+
+
+Let’s verify this.
+
+Take any vector \( \mathbf{u} \) in the column space of \( P \). Then \( \mathbf{u} = P\mathbf{a} \) for some vector \( \mathbf{a} \).  
+Take any vector \( \mathbf{v} \) in the null space of \( P \). Then \( P\mathbf{v} = \mathbf{0} \).
+
+Now compute their dot product:
+\[
+\mathbf{u} \cdot \mathbf{v} = \mathbf{u}^\top \mathbf{v} = (P\mathbf{a})^\top \mathbf{v}.
+\]
+Using the property of the transpose, \( (P\mathbf{a})^\top = \mathbf{a}^\top P^\top \), so
+\[
+(P\mathbf{a})^\top \mathbf{v} = \mathbf{a}^\top P^\top \mathbf{v}.
+\]
+But we assumed \( P^\top = P \), so this becomes
+\[
+\mathbf{a}^\top P \mathbf{v}.
+\]
+And since \( \mathbf{v} \) is in the null space, \( P\mathbf{v} = \mathbf{0} \), so
+\[
+\mathbf{a}^\top \mathbf{0} = 0.
+\]
+
+Thus, every vector in the column space is perpendicular to every vector in the null space.  
+This is exactly what it means for the projection to be orthogonal.
+
+\section*{Part 2: If \( P \) is an orthogonal projection, then it is symmetric}
+
+Now assume that \( P \) is a projection (\( P^2 = P \)) and that it is \textbf{orthogonal}.  
+This means, by definition, that
+\[
+\operatorname{Col}(P) \perp \operatorname{Nul}(P).
+\]
+
+We want to show that \( P^\top = P \).  
+A standard way to prove two matrices are equal is to show that they give the same result when used in a dot product. Specifically, we will show that for \textit{all} vectors \( \mathbf{x} \) and \( \mathbf{y} \),
+\[
+\mathbf{x}^\top P \mathbf{y} = \mathbf{x}^\top P^\top \mathbf{y}.
+\]
+Since \( \mathbf{x}^\top P^\top \mathbf{y} = (P\mathbf{x})^\top \mathbf{y} = \mathbf{y}^\top P \mathbf{x} \), this is equivalent to showing
+\[
+\mathbf{x}^\top P \mathbf{y} = \mathbf{y}^\top P \mathbf{x} \quad \text{for all } \mathbf{x}, \mathbf{y}.
+\]
+
+To see why this is true, decompose both \( \mathbf{x} \) and \( \mathbf{y} \) using the projection:
+\[
+\mathbf{x} = P\mathbf{x} + (\mathbf{x} - P\mathbf{x}), \quad
+\mathbf{y} = P\mathbf{y} + (\mathbf{y} - P\mathbf{y}).
+\]
+Because \( P \) is a projection, \( P\mathbf{x} \) lies in the column space, and \( \mathbf{x} - P\mathbf{x} \) lies in the null space (since \( P(\mathbf{x} - P\mathbf{x}) = P\mathbf{x} - P^2\mathbf{x} = \mathbf{0} \)). The same holds for \( \mathbf{y} \).
+
+Now, because the projection is \textit{orthogonal}, the column space and null space are perpendicular. So:
+- \( P\mathbf{x} \perp (\mathbf{y} - P\mathbf{y}) \),
+- \( (\mathbf{x} - P\mathbf{x}) \perp P\mathbf{y} \),
+- and \( (\mathbf{x} - P\mathbf{x}) \perp (\mathbf{y} - P\mathbf{y}) \) (though we won’t need this).
+
+Now compute \( \mathbf{x}^\top P \mathbf{y} \):
+\[
+\mathbf{x}^\top P \mathbf{y} = \big( P\mathbf{x} + (\mathbf{x} - P\mathbf{x}) \big)^\top P\mathbf{y}
+= (P\mathbf{x})^\top P\mathbf{y} + (\mathbf{x} - P\mathbf{x})^\top P\mathbf{y}.
+\]
+But \( (\mathbf{x} - P\mathbf{x}) \perp P\mathbf{y} \), so the second term is zero. Thus,
+\[
+\mathbf{x}^\top P \mathbf{y} = (P\mathbf{x})^\top P\mathbf{y}.
+\]
+
+Similarly, compute \( \mathbf{y}^\top P \mathbf{x} \):
+\[
+\mathbf{y}^\top P \mathbf{x} = (P\mathbf{y})^\top P\mathbf{x} = (P\mathbf{x})^\top P\mathbf{y},
+\]
+since the dot product is symmetric: \( \mathbf{a}^\top \mathbf{b} = \mathbf{b}^\top \mathbf{a} \).
+
+Therefore,
+\[
+\mathbf{x}^\top P \mathbf{y} = \mathbf{y}^\top P \mathbf{x} \quad \text{for all } \mathbf{x}, \mathbf{y}.
+\]
+
+As noted earlier, this implies \( P = P^\top \).
+
+\section*{Conclusion}
+
+We have shown both directions:
+\begin{itemize}
+\item If \( P \) is a symmetric projection (\( P^2 = P \) and \( P^\top = P \)), then it is an orthogonal projection.
+    \item If \( P \) is an orthogonal projection, then it must be symmetric.
+\end{itemize}
+
+Hence, symmetry (\( P^\top = P \)) is the precise algebraic condition that captures the geometric idea of orthogonal projection.
+
+This result beautifully ties together:
+\begin{itemize}
+\item \textbf{Algebra}: the equation \( P^\top = P \),
+    \item \textbf{Geometry}: perpendicularity of range and null space,
+    \item \textbf{Linear algebra}: the structure of projections and the four fundamental subspaces.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+\section*{Linear Regression}
+
+Suppose you are a scientist running experiments.
+
+\begin{itemize}
+\item You perform $m$ experiments (e.g., measuring plant growth under different conditions).
+    \item In each experiment, you record $n$ \textbf{features} (inputs), such as sunlight, water, etc.
+    \item You also measure one \textbf{outcome} (response), like final height.
+You believe the outcome is approximately a linear combination of the features:
+\[
+\text{Outcome} \approx \beta_1 \cdot (\text{feature}_1) + \cdots + \beta_n \cdot (\text{feature}_n).
+\]
+\end{itemize}
+
+Your goal is to find the best coefficients $\beta_1, \dots, \beta_n$.
+
+\section*{The Design Matrix}
+
+Organize your data into:
+
+\begin{itemize}
+\item The \textbf{design matrix} $X$ (size $m \times n$): each row is an experiment, each column is a feature.
+    \item The \textbf{outcome vector} $\mathbf{y} \in \mathbb{R}^m$: the measured responses.
+    \item The \textbf{coefficient vector} $\boldsymbol{\beta} \in \mathbb{R}^n$: the unknown weights to be estimated.
+We wish to solve $X\boldsymbol{\beta} = \mathbf{y}$. But if $m > n$ (more experiments than features), this system is \textbf{overdetermined}—there is usually no exact solution because $\mathbf{y}$ does not lie in the column space of $X$.
+\end{itemize}
+
+
+\section*{Orthogonal Projection to the Rescue}
+
+Instead, we find the vector $\hat{\mathbf{y}} \in \operatorname{Col}(X)$ that is \textbf{closest} to $\mathbf{y}$ in Euclidean distance.  
+Geometrically, this is the \textbf{orthogonal projection} of $\mathbf{y}$ onto $\operatorname{Col}(X)$.
+
+The error $\mathbf{e} = \mathbf{y} - \hat{\mathbf{y}}$ must be perpendicular to $\operatorname{Col}(X)$, which means:
+\[
+X^\top (\mathbf{y} - \hat{\mathbf{y}}) = \mathbf{0}.
+\]
+Since $\hat{\mathbf{y}} = X\hat{\boldsymbol{\beta}}$, this gives the \textbf{normal equation}:
+\[
+X^\top X \hat{\boldsymbol{\beta}} = X^\top \mathbf{y}.
+\]
+Assuming $X$ has full column rank, $X^\top X$ is invertible, so:
+\[
+\hat{\boldsymbol{\beta}} = (X^\top X)^{-1} X^\top \mathbf{y}.
+\]
+Thus, the projected vector is:
+\[
+\hat{\mathbf{y}} = X (X^\top X)^{-1} X^\top \mathbf{y} = P \mathbf{y},
+\]
+where
+\[
+P = X (X^\top X)^{-1} X^\top
+\]
+is the \textbf{orthogonal projection matrix} onto $\operatorname{Col}(X)$. It satisfies $P^2 = P$ and $P^\top = P$.
+
+\section*{Why This Matters}
+
+
+\begin{itemize}
+\item $\hat{\boldsymbol{\beta}}$ tells you how much each feature contributes to the outcome.
+    \item The residuals $\mathbf{e} = \mathbf{y} - \hat{\mathbf{y}}$ represent unexplained variation.
+    \item Because the projection is orthogonal, $\hat{\mathbf{y}} \perp \mathbf{e}$, so the explained and unexplained parts are uncorrelated—a key property in statistics.
+\end{itemize}
+
+
+\section*{Numerical Example}
+We wish to predict house prices based on size (in square feet) using a linear model:
+\[
+\text{Price} = \beta_0 + \beta_1 \cdot \text{Size}.
+\]
+We have data from 4 houses:
+
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+House & Size (sq ft) & Price (\$) \\
+\midrule
+1 & 1000 & 200{,}000 \\
+2 & 1500 & 300{,}000 \\
+3 & 2000 & 400{,}000 \\
+4 & 2500 & 550{,}000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{Step 1: Set up the design matrix and outcome vector}
+
+To include an intercept $\beta_0$, we add a column of 1s to the design matrix:
+\[
+X = \begin{bmatrix}
+1 & 1000 \\
+1 & 1500 \\
+1 & 2000 \\
+1 & 2500
+\end{bmatrix},
+\quad
+\mathbf{y} = \begin{bmatrix}
+200{,}000 \\
+300{,}000 \\
+400{,}000 \\
+550{,}000
+\end{bmatrix}.
+\]
+
+\section*{Step 2: Compute $X^\top X$}
+
+\[
+X^\top X =
+\begin{bmatrix}
+1 & 1 & 1 & 1 \\
+1000 & 1500 & 2000 & 2500
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1000 \\
+1 & 1500 \\
+1 & 2000 \\
+1 & 2500
+\end{bmatrix}
+=
+\begin{bmatrix}
+4 & 7000 \\
+7000 & 13{,}500{,}000
+\end{bmatrix}.
+\]
+
+\section*{Step 3: Compute $X^\top \mathbf{y}$}
+
+\[
+X^\top \mathbf{y} =
+\begin{bmatrix}
+1 & 1 & 1 & 1 \\
+1000 & 1500 & 2000 & 2500
+\end{bmatrix}
+\begin{bmatrix}
+200{,}000 \\
+300{,}000 \\
+400{,}000 \\
+550{,}000
+\end{bmatrix}
+=
+\begin{bmatrix}
+1{,}450{,}000 \\
+2{,}825{,}000{,}000
+\end{bmatrix}.
+\]
+
+\section*{Step 4: Solve the normal equation}
+
+We solve $(X^\top X)\boldsymbol{\beta} = X^\top \mathbf{y}$ for $\boldsymbol{\beta} = \begin{bmatrix} \beta_0 \\ \beta_1 \end{bmatrix}$.
+
+The inverse of $X^\top X$ is:
+\[
+(X^\top X)^{-1} = \frac{1}{(4)(13{,}500{,}000) - (7000)^2}
+\begin{bmatrix}
+13{,}500{,}000 & -7000 \\
+-7000 & 4
+\end{bmatrix}
+= \frac{1}{5{,}000{,}000}
+\begin{bmatrix}
+13{,}500{,}000 & -7000 \\
+-7000 & 4
+\end{bmatrix}.
+\]
+
+Thus,
+\[
+\boldsymbol{\beta} = (X^\top X)^{-1} X^\top \mathbf{y}
+= \frac{1}{5{,}000{,}000}
+\begin{bmatrix}
+13{,}500{,}000 & -7000 \\
+-7000 & 4
+\end{bmatrix}
+\begin{bmatrix}
+1{,}450{,}000 \\
+2{,}825{,}000{,}000
+\end{bmatrix}
+=
+\begin{bmatrix}
+-40{,}000 \\
+230
+\end{bmatrix}.
+\]
+
+So the best-fit line is:
+\[
+\widehat{\text{Price}} = -40{,}000 + 230 \cdot \text{Size}.
+\]
+
+\section*{Step 5: Compute predictions and residuals}
+
+\begin{center}
+\begin{tabular}{c|c|c|c}
+Size & Actual Price & Predicted Price & Residual \\
+\midrule
+1000 & 200{,}000 & $-40{,}000 + 230(1000) = 190{,}000$ & $+10{,}000$ \\
+1500 & 300{,}000 & $-40{,}000 + 230(1500) = 305{,}000$ & $-5{,}000$ \\
+2000 & 400{,}000 & $-40{,}000 + 230(2000) = 420{,}000$ & $-20{,}000$ \\
+2500 & 550{,}000 & $-40{,}000 + 230(2500) = 535{,}000$ & $+15{,}000$ \\
+\end{tabular}
+\end{center}
+
+The residual vector is
+\[
+\mathbf{e} = \begin{bmatrix}
+10{,}000 \\
+-5{,}000 \\
+-20{,}000 \\
+15{,}000
+\end{bmatrix}.
+\]
+
+\section*{Step 6: Verify orthogonality}
+
+For the projection to be orthogonal, the residuals must be perpendicular to both columns of $X$.
+
+\begin{itemize}
+\item Dot product with first column of $X$ (intercept):
+    \[
+    \begin{bmatrix} 1 & 1 & 1 & 1 \end{bmatrix} \mathbf{e}
+    = 10{,}000 - 5{,}000 - 20{,}000 + 15{,}000 = 0.
+    \]
+
+    \item Dot product with second column of $X$ (size):
+    \[
+    \begin{bmatrix} 1000 & 1500 & 2000 & 2500 \end{bmatrix} 
+    \mathbf{e}
+    = 1000(10{,}000) + 1500(-5{,}000) + 2000(-20{,}000) + 2500(15{,}000)
+    = 10{,}000{,}000 - 7{,}500{,}000 - 40{,}000{,}000 + 37{,}500{,}000 = 0.
+\]
+Both dot products are zero, confirming that the residuals are orthogonal to $\operatorname{Col}(X)$. This verifies that the least-squares solution is indeed the orthogonal projection of $\mathbf{y}$ onto the column space of $X$.
+\end{itemize}
+
+
+
+
+\end{document}
