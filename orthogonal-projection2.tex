@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\title{Converse Proof: Symmetric Idempotent Matrices are Orthogonal Projections}
+\author{}
+\date{}
+\maketitle
+
+\Large
+
+\section*{Theorem}
+If a matrix $P \in \mathbb{R}^{n \times n}$ satisfies:
+\begin{enumerate}
+    \item $P^T = P$ (symmetry)
+    \item $P^2 = P$ (idempotence)
+\end{enumerate}
+then $P$ is an orthogonal projection matrix.
+
+\section*{Proof}
+
+Let $P$ be a matrix satisfying $P^T = P$ and $P^2 = P$. We need to show that $P$ represents an orthogonal projection, which means for any vector $\mathbf{x} \in \mathbb{R}^n$:
+
+\begin{enumerate}
+    \item $P\mathbf{x}$ lies in some subspace $W \subseteq \mathbb{R}^n$
+    \item $\mathbf{x} - P\mathbf{x}$ is orthogonal to every vector in $W$
+\end{enumerate}
+
+\subsection*{Step 1: Define the subspace $W$}
+
+Let $W = \text{range}(P) = \{P\mathbf{x} \mid \mathbf{x} \in \mathbb{R}^n\}$, the column space of $P$.
+
+For any $\mathbf{x} \in \mathbb{R}^n$, $P\mathbf{x} \in W$ by definition of $W$.
+
+\subsection*{Step 2: Show $\mathbf{x} - P\mathbf{x}$ is orthogonal to $W$}
+
+We need to prove that for any $\mathbf{x} \in \mathbb{R}^n$ and any $\mathbf{y} \in W$, the following holds:
+\[
+(\mathbf{x} - P\mathbf{x}) \cdot \mathbf{y} = 0
+\]
+
+Since $\mathbf{y} \in W$, there exists some $\mathbf{z} \in \mathbb{R}^n$ such that $\mathbf{y} = P\mathbf{z}$.
+
+Computing the dot product:
+\begin{align*}
+(\mathbf{x} - P\mathbf{x}) \cdot \mathbf{y} 
+&= (\mathbf{x} - P\mathbf{x})^T (P\mathbf{z}) \\
+&= \mathbf{x}^T P\mathbf{z} - (P\mathbf{x})^T P\mathbf{z} \\
+&= \mathbf{x}^T P\mathbf{z} - \mathbf{x}^T P^T P\mathbf{z} \\
+&= \mathbf{x}^T P\mathbf{z} - \mathbf{x}^T P P\mathbf{z} \quad \text{(since $P^T = P$)} \\
+&= \mathbf{x}^T P\mathbf{z} - \mathbf{x}^T P^2\mathbf{z} \\
+&= \mathbf{x}^T P\mathbf{z} - \mathbf{x}^T P\mathbf{z} \quad \text{(since $P^2 = P$)} \\
+&= 0
+\end{align*}
+
+Therefore, $\mathbf{x} - P\mathbf{x}$ is orthogonal to every vector in $W$.
+
+\subsection*{Step 3: Verify the decomposition}
+
+For any $\mathbf{x} \in \mathbb{R}^n$, we can write:
+\[
+\mathbf{x} = P\mathbf{x} + (\mathbf{x} - P\mathbf{x})
+\]
+where:
+\begin{itemize}
+\item $P\mathbf{x} \in W$
+    \item $\mathbf{x} - P\mathbf{x}$ is orthogonal to $W$ (as shown in Step 2)
+\end{itemize}
+
+This is precisely the defining property of an orthogonal projection.
+
+\subsection*{Step 4: Confirm $P$ is a projection}
+
+We also need to verify that $P$ acts as a projection onto $W$. For any $\mathbf{w} \in W$, there exists $\mathbf{z}$ such that $\mathbf{w} = P\mathbf{z}$. Then:
+\[
+P\mathbf{w} = P(P\mathbf{z}) = P^2\mathbf{z} = P\mathbf{z} = \mathbf{w}
+\]
+So $P$ fixes all vectors in $W$, as expected for a projection.
+
+\section*{Conclusion}
+
+We have shown that if $P^T = P$ and $P^2 = P$, then for any vector $\mathbf{x}$:
+
+\begin{itemize}
+\item $P\mathbf{x}$ lies in the subspace $W = \text{range}(P)$
+    \item $\mathbf{x} - P\mathbf{x}$ is orthogonal to $W$
+\end{itemize}
+
+Therefore, $P$ represents an orthogonal projection onto its range.
+
+\boxed{P^T = P \text{ and } P^2 = P \implies P \text{ is an orthogonal projection}}
+
+\textbf{Q.E.D.}
+
+\end{document}
+

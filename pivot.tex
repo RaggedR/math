@@ -1,0 +1,603 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+
+\title{The Rank--Nullity Theorem and the Four Fundamental Subspaces}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\Large
+
+
+\section*{Finding Bases for the Four Fundamental Subspaces via Row Echelon Reduction}
+
+We assume that you know how to perform Gaussian elimination to reduce a matric to Row Echelon form. Let $A$ be an $m \times n$ matrix. Perform Gaussian elimination to reduce $A$ to its (reduced) row echelon form $R$. The pivot columns and rows of $R$ provide the necessary information to construct bases for all four fundamental subspaces.
+
+The first step is to use elementary row operations to obtain a matrix $R$ in (reduced) row echelon form that is row-equivalent to $A$. Let the pivot columns be indexed by $j_1, j_2, \dots, j_r$, where $r = \operatorname{rank}(A)$.
+
+\subsection*{Basis for the Row Space $\operatorname{Row}(A)$}
+The nonzero rows of $R$ form a basis for $\operatorname{Row}(A)$. This is because elementary row operations do not change the row space.
+
+\subsection*{Basis for the Column space $\operatorname{Col}(A)$}
+
+Let $A$ be an $m \times n$ real matrix. We aim to explain why the columns of the \textbf{original matrix} $A$ that correspond to the \textbf{pivot columns} in a row echelon form of $A$ constitute a basis for the column space $\operatorname{Col}(A)$.
+
+Begin by writing the matrix $A$ in terms of its columns:
+\[
+A = \begin{bmatrix} \mathbf{a}_1 & \mathbf{a}_2 & \cdots & \mathbf{a}_n \end{bmatrix},
+\]
+where each $\mathbf{a}_j \in \mathbb{R}^m$. The \textbf{column space} of $A$ is the subspace of $\mathbb{R}^m$ defined by
+\[
+\operatorname{Col}(A) = \operatorname{span}\{ \mathbf{a}_1, \mathbf{a}_2, \dots, \mathbf{a}_n \}.
+\]
+A \textbf{basis} for $\operatorname{Col}(A)$ is a subset of these columns that is
+\begin{enumerate}[label=(\roman*)]
+    \item linearly independent, and
+    \item spans $\operatorname{Col}(A)$.
+\end{enumerate}
+
+The next step is to row reduce $A$ to row echelon form.
+Perform Gaussian elimination on $A$ to obtain a row echelon form $R$. Since elementary row operations are invertible, there exists an invertible $m \times m$ matrix $E$ such that
+\[
+R = EA.
+\]
+
+Let the pivot columns of $R$ be in positions $j_1, j_2, \dots, j_r$, where $r = \operatorname{rank}(A)$. These are the columns that contain the leading (first nonzero) entries of each nonzero row in $R$.
+
+\section*{3. Properties of pivot columns in row echelon form}
+
+In the row echelon matrix $R$, the following hold:
+\begin{itemize}
+\item The pivot columns $\mathbf{r}_{j_1}, \dots, \mathbf{r}_{j_r}$ are \textbf{linearly independent}.
+    \item Every non-pivot column of $R$ is a \textbf{linear combination} of the pivot columns to its left.
+\end{itemize}
+
+These facts follow from the staircase structure of $R$: each pivot appears in a new row below the previous one, and all entries below a pivot are zero. This allows back-substitution to verify independence and express non-pivot columns as combinations of earlier pivot columns.
+
+Thus, $\{ \mathbf{r}_{j_1}, \dots, \mathbf{r}_{j_r} \}$ is a basis for $\operatorname{Col}(R)$.
+
+\textbf{However}, note that in general
+\[
+\operatorname{Col}(A) \ne \operatorname{Col}(R),
+\]
+so we \textbf{cannot} use the columns of $R$ as a basis for $\operatorname{Col}(A)$.
+
+
+Although the column spaces differ, row operations \textbf{preserve all linear dependence relations among the columns}. To see this, observe:
+\[
+A\mathbf{x} = \mathbf{0}
+\iff
+EA\mathbf{x} = E\mathbf{0}
+\iff
+R\mathbf{x} = \mathbf{0}.
+\]
+Hence,
+\[
+\operatorname{Nul}(A) = \operatorname{Nul}(R).
+\]
+
+This equality means that a set of columns of $A$ is linearly dependent \textbf{if and only if} the corresponding set of columns of $R$ is linearly dependent. In other words, the \textit{pattern} of linear dependence among the columns is identical in $A$ and $R$.
+
+
+Because the dependence relations are the same:
+\begin{itemize}
+\item The columns $\mathbf{a}_{j_1}, \dots, \mathbf{a}_{j_r}$ of $A$ (in the same positions as the pivot columns of $R$) are \textbf{linearly independent}. \\
+    \textit{Reason:} If they were linearly dependent, the same dependence would appear among $\mathbf{r}_{j_1}, \dots, \mathbf{r}_{j_r}$, contradicting their independence in $R$.
+
+    \item Every non-pivot column $\mathbf{a}_k$ of $A$ (where $k \notin \{j_1,\dots,j_r\}$) is a \textbf{linear combination} of $\mathbf{a}_{j_1}, \dots, \mathbf{a}_{j_r}$. \\
+    \textit{Reason:} In $R$, we have $\mathbf{r}_k = c_1 \mathbf{r}_{j_1} + \cdots + c_r \mathbf{r}_{j_r}$ for some scalars $c_i$. Then the vector $\mathbf{x}$ with $x_k = 1$, $x_{j_i} = -c_i$, and other entries zero satisfies $R\mathbf{x} = \mathbf{0}$. Since $\operatorname{Nul}(A) = \operatorname{Nul}(R)$, we also have $A\mathbf{x} = \mathbf{0}$, which implies $\mathbf{a}_k = c_1 \mathbf{a}_{j_1} + \cdots + c_r \mathbf{a}_{j_r}$.
+\end{itemize}
+
+
+Therefore, the set
+\[
+\{ \mathbf{a}_{j_1}, \mathbf{a}_{j_2}, \dots, \mathbf{a}_{j_r} \}
+\]
+is linearly independent and spans $\operatorname{Col}(A)$.
+
+\section*{ Conclusion}
+
+This set is a \textbf{basis for the column space of $A$}. Hence:
+
+\begin{theorem}
+Let $A$ be an $m \times n$ matrix, and let $R$ be any row echelon form of $A$. If the pivot columns of $R$ occur in positions $j_1, \dots, j_r$, then the corresponding columns of the original matrix $A$,
+\[
+\{ \mathbf{a}_{j_1}, \dots, \mathbf{a}_{j_r} \},
+\]
+form a basis for $\operatorname{Col}(A)$.
+\end{theorem}
+
+\begin{remark}
+It is crucial to use the columns of the \textbf{original matrix} $A$, not those of $R$. While $R$ reveals \textit{which} columns to select, the actual basis vectors must come from $A$ because $\operatorname{Col}(A) \ne \operatorname{Col}(R)$ in general.
+\end{remark}
+
+
+
+\section*{Example}
+Given a matrix $A$, find a basis for its column space $\operatorname{Col}(A)$ — that is, a linearly independent set of columns of $A$ that spans $\operatorname{Col}(A)$.
+
+
+
+Let
+\[
+A = \begin{bmatrix}
+1 & 2 & 3 & 1 \\
+2 & 4 & 6 & 2 \\
+1 & 0 & 1 & 2 \\
+0 & 2 & 4 & 1
+\end{bmatrix}.
+\]
+This is a $4 \times 4$ matrix. Its column space is a subspace of $\mathbb{R}^4$.
+
+\section*{Step-by-Step Procedure}
+
+\subsection*{Step 1: Row reduce $A$ to row echelon form (REF)}
+
+Perform Gaussian elimination:
+
+\begin{align*}
+A &= 
+\begin{bmatrix}
+1 & 2 & 3 & 1 \\
+2 & 4 & 6 & 2 \\
+1 & 0 & 1 & 2 \\
+0 & 2 & 4 & 1
+\end{bmatrix}
+\xrightarrow{R_2 \gets R_2 - 2R_1,\, R_3 \gets R_3 - R_1}
+\begin{bmatrix}
+1 & 2 & 3 & 1 \\
+0 & 0 & 0 & 0 \\
+0 & -2 & -2 & 1 \\
+0 & 2 & 4 & 1
+\end{bmatrix} \\
+&\xrightarrow{\text{swap } R_2 \leftrightarrow R_3}
+\begin{bmatrix}
+1 & 2 & 3 & 1 \\
+0 & -2 & -2 & 1 \\
+0 & 0 & 0 & 0 \\
+0 & 2 & 4 & 1
+\end{bmatrix}
+\xrightarrow{R_4 \gets R_4 + R_2}
+\begin{bmatrix}
+1 & 2 & 3 & 1 \\
+0 & -2 & -2 & 1 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 2 & 2
+\end{bmatrix} \\
+&\xrightarrow{\text{swap } R_3 \leftrightarrow R_4}
+\begin{bmatrix}
+1 & 2 & 3 & 1 \\
+0 & -2 & -2 & 1 \\
+0 & 0 & 2 & 2 \\
+0 & 0 & 0 & 0
+\end{bmatrix}.
+\end{align*}
+
+This is a row echelon form (REF) of $A$.
+
+\subsection*{Step 2: Identify the pivot columns}
+
+The leading (first nonzero) entry in each nonzero row occurs in:
+\begin{itemize}
+\item Row 1: column 1,
+    \item Row 2: column 2,
+    \item Row 3: column 3.
+Thus, the \textbf{pivot columns} are columns $1$, $2$, and $3$. Hence, $\operatorname{rank}(A) = 3$.
+\end{itemize}
+\subsection*{Step 3: Select the corresponding columns from the original matrix $A$}
+
+Take columns 1, 2, and 3 of the \textbf{original} matrix $A$:
+\[
+\mathbf{a}_1 = \begin{bmatrix} 1 \\ 2 \\ 1 \\ 0 \end{bmatrix}, \quad
+\mathbf{a}_2 = \begin{bmatrix} 2 \\ 4 \\ 0 \\ 2 \end{bmatrix}, \quad
+\mathbf{a}_3 = \begin{bmatrix} 3 \\ 6 \\ 1 \\ 4 \end{bmatrix}.
+\]
+
+\subsection*{Step 4: Justification}
+\begin{itemize}
+\item These columns are \textbf{linearly independent} because the corresponding columns in the REF are linearly independent, and row operations preserve linear dependence relations among columns.
+    \item They \textbf{span} $\operatorname{Col}(A)$ because every non-pivot column (here, column 4) is a linear combination of the pivot columns, and the same linear relation holds in $A$ as in its REF.
+\end{itemize}
+
+
+\section*{Demonstration: Identical Linear Dependence Relations in $A$ and $R$}
+
+Let us verify explicitly that linear dependence relations among columns are the same in $A$ and $R$.
+
+Denote the columns of $R$ by $\mathbf{r}_1, \mathbf{r}_2, \mathbf{r}_3, \mathbf{r}_4$. From the REF:
+\[
+R = \begin{bmatrix}
+1 & 2 & 3 & 1 \\
+0 & -2 & -2 & 1 \\
+0 & 0 & 2 & 2 \\
+0 & 0 & 0 & 0
+\end{bmatrix},
+\]
+so
+\[
+\mathbf{r}_1 = \begin{bmatrix}1\\0\\0\\0\end{bmatrix},\ 
+\mathbf{r}_2 = \begin{bmatrix}2\\-2\\0\\0\end{bmatrix},\ 
+\mathbf{r}_3 = \begin{bmatrix}3\\-2\\2\\0\end{bmatrix},\ 
+\mathbf{r}_4 = \begin{bmatrix}1\\1\\2\\0\end{bmatrix}.
+\]
+
+Observe that column 4 of $R$ can be expressed as a linear combination of columns 1–3. Solving
+\[
+c_1 \mathbf{r}_1 + c_2 \mathbf{r}_2 + c_3 \mathbf{r}_3 = \mathbf{r}_4,
+\]
+we work from the bottom up (using the echelon structure):
+
+- Row 3: $0c_1 + 0c_2 + 2c_3 = 2 \Rightarrow c_3 = 1$,
+- Row 2: $0c_1 -2c_2 -2c_3 = 1 \Rightarrow -2c_2 -2(1) = 1 \Rightarrow c_2 = -\tfrac{3}{2}$,
+- Row 1: $c_1 + 2c_2 + 3c_3 = 1 \Rightarrow c_1 + 2(-\tfrac{3}{2}) + 3(1) = 1 \Rightarrow c_1 -3 + 3 = 1 \Rightarrow c_1 = 1$.
+
+Thus,
+\[
+\mathbf{r}_4 = 1\cdot\mathbf{r}_1 - \tfrac{3}{2}\cdot\mathbf{r}_2 + 1\cdot\mathbf{r}_3.
+\]
+
+Now consider the same linear combination of the **original columns** of $A$:
+\[
+1\cdot\mathbf{a}_1 - \tfrac{3}{2}\cdot\mathbf{a}_2 + 1\cdot\mathbf{a}_3
+= 
+\begin{bmatrix}1\\2\\1\\0\end{bmatrix}
+- \tfrac{3}{2}\begin{bmatrix}2\\4\\0\\2\end{bmatrix}
++ \begin{bmatrix}3\\6\\1\\4\end{bmatrix}
+=
+\begin{bmatrix}
+1 - 3 + 3 \\
+2 - 6 + 6 \\
+1 - 0 + 1 \\
+0 - 3 + 4
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 \\ 2 \\ 2 \\ 1
+\end{bmatrix}.
+\]
+
+But this is exactly the fourth column of $A$:
+\[
+\mathbf{a}_4 = \begin{bmatrix}1\\2\\2\\1\end{bmatrix}.
+\]
+
+Hence,
+\[
+\mathbf{a}_4 = 1\cdot\mathbf{a}_1 - \tfrac{3}{2}\cdot\mathbf{a}_2 + 1\cdot\mathbf{a}_3.
+\]
+
+The **same coefficients** that express $\mathbf{r}_4$ as a combination of $\mathbf{r}_1,\mathbf{r}_2,\mathbf{r}_3$ also express $\mathbf{a}_4$ as a combination of $\mathbf{a}_1,\mathbf{a}_2,\mathbf{a}_3$.
+
+This confirms that **linear dependence relations among columns are identical in $A$ and $R$**, which is why the pivot columns of $A$ are linearly independent and span $\operatorname{Col}(A)$.
+
+
+\section*{Final Answer}
+
+
+
+A basis for $\operatorname{Col}(A)$ is
+\[
+\boxed{
+\left\{
+\begin{bmatrix} 1 \\ 2 \\ 1 \\ 0 \end{bmatrix},
+\begin{bmatrix} 2 \\ 4 \\ 0 \\ 2 \end{bmatrix},
+\begin{bmatrix} 3 \\ 6 \\ 1 \\ 4 \end{bmatrix}
+\right\}
+}.
+\]
+
+This set contains $3$ vectors (matching $\operatorname{rank}(A) = 3$), is linearly independent, and spans $\operatorname{Col}(A)$.
+
+\begin{remark}
+\textbf{Important:} Always use the columns of the \textbf{original matrix} $A$, \textit{not} the columns of the row echelon form. The column space of the REF is generally different from that of $A$.
+\end{remark}
+
+\section*{Right Null Space}
+
+\section*{Goal}
+Given an $m \times n$ matrix $A$, find a \textbf{basis} for its null space
+\[
+\operatorname{Nul}(A) = \{ \mathbf{x} \in \mathbb{R}^n : A\mathbf{x} = \mathbf{0} \},
+\]
+i.e., a linearly independent set of vectors in $\mathbb{R}^n$ whose span is exactly the set of all solutions to $A\mathbf{x} = \mathbf{0}$.
+
+\section*{Core Idea}
+
+The null space consists of all vectors $\mathbf{x}$ such that the linear combination of the columns of $A$ with coefficients $x_1, \dots, x_n$ equals the zero vector:
+\[
+x_1 \mathbf{a}_1 + x_2 \mathbf{a}_2 + \cdots + x_n \mathbf{a}_n = \mathbf{0}.
+\]
+
+Row reduction does not change the solution set of this homogeneous system. Thus, we may solve the simpler system $R\mathbf{x} = \mathbf{0}$, where $R$ is the (reduced) row echelon form of $A$.
+
+\section*{Step-by-Step Procedure}
+
+\subsection*{Step 1: Reduce $A$ to Reduced Row Echelon Form (RREF)}
+
+Use Gaussian elimination with back-substitution to obtain the \textbf{reduced row echelon form} $R$ of $A$.
+
+Since elementary row operations are invertible and preserve the solution set,
+\[
+A\mathbf{x} = \mathbf{0} \quad \Longleftrightarrow \quad R\mathbf{x} = \mathbf{0}.
+\]
+
+\subsection*{Step 2: Identify Pivot and Free Columns}
+
+In $R$:
+\begin{itemize}
+\item A \textbf{pivot column} contains a leading 1 (the first nonzero entry in its row).
+    \item A \textbf{free column} has no pivot.
+\end{itemize}
+Let:
+\begin{itemize}
+\item $r = \operatorname{rank}(A)$ = number of pivot columns,
+    \item $n - r$ = number of free columns.
+\end{itemize}
+
+The variables corresponding to:
+\begin{itemize}
+\item \textbf{Pivot columns} are called \textbf{basic variables},
+    \item \textbf{Free columns} are called \textbf{free variables}.
+\end{itemize}
+
+The free variables can be assigned arbitrary values; the basic variables are then uniquely determined.
+
+\subsection*{Step 3: Solve $R\mathbf{x} = \mathbf{0}$ in Terms of Free Variables}
+
+Write the system $R\mathbf{x} = \mathbf{0}$ as equations. Because $R$ is in RREF, each nonzero row gives an equation of the form
+\[
+x_{\text{pivot}} + \sum_{\text{free } j > \text{pivot}} r_{ij} x_j = 0,
+\]
+so
+\[
+x_{\text{pivot}} = -\sum_{\text{free } j > \text{pivot}} r_{ij} x_j.
+\]
+
+Thus, every basic variable is expressed as a linear combination of the free variables.
+
+\subsection*{Step 4: Construct Special Solutions (Basis Vectors)}
+
+For each free variable $x_{f_k}$ (where $k = 1, 2, \dots, n - r$), construct a vector $\mathbf{v}_k \in \mathbb{R}^n$ as follows:
+\begin{enumerate}[label=(\alph*)]
+    \item Set $x_{f_k} = 1$.
+    \item Set all other free variables to $0$.
+    \item Use the equations from Step 3 to compute the values of all basic variables.
+    \item Assemble the full vector $\mathbf{v}_k = (x_1, x_2, \dots, x_n)^\top$.
+\end{enumerate}
+
+Each $\mathbf{v}_k$ is called a \textbf{special solution} corresponding to the free variable $x_{f_k}$.
+
+\subsection*{Step 5: The Set $\{ \mathbf{v}_1, \dots, \mathbf{v}_{n-r} \}$ is a Basis}
+
+\begin{itemize}
+\item \textbf{Linear independence}: In the subvector corresponding to free variables, $\mathbf{v}_k$ has a 1 in position $f_k$ and 0 elsewhere. Hence, no nontrivial linear combination can be zero.
+    \item \textbf{Spanning}: Any solution $\mathbf{x}$ to $A\mathbf{x} = \mathbf{0}$ is determined by its free variable values $c_1, \dots, c_{n-r}$, and then
+    \[
+    \mathbf{x} = c_1 \mathbf{v}_1 + \cdots + c_{n-r} \mathbf{v}_{n-r}.
+    \]
+\end{itemize}
+
+Therefore, this set is a basis for $\operatorname{Nul}(A)$.
+
+\section*{Worked Example}
+
+Let
+\[
+A = \begin{bmatrix}
+1 & 2 & 3 & 4 \\
+2 & 4 & 6 & 8 \\
+1 & 1 & 2 & 3
+\end{bmatrix}.
+\]
+
+\subsection*{Step 1: Reduce to RREF}
+\[
+A \xrightarrow{\text{row reduce}} R = \begin{bmatrix}
+1 & 0 & 1 & 2 \\
+0 & 1 & 1 & 1 \\
+0 & 0 & 0 & 0
+\end{bmatrix}.
+\]
+
+\subsection*{Step 2: Identify pivot and free columns}
+
+\begin{itemize}
+\item Pivot columns: 1 and 2 $\Rightarrow$ basic variables: $x_1, x_2$,
+    \item Free columns: 3 and 4 $\Rightarrow$ free variables: $x_3, x_4$,
+    \item Rank $r = 2$, so $\dim(\operatorname{Nul}(A)) = 4 - 2 = 2$.
+\end{itemize}
+
+\subsection*{Step 3: Solve $R\mathbf{x} = \mathbf{0}$}
+From $R$:
+\[
+\begin{cases}
+x_1 + x_3 + 2x_4 = 0 \\
+x_2 + x_3 + x_4 = 0
+\end{cases}
+\quad \Rightarrow \quad
+\begin{cases}
+x_1 = -x_3 - 2x_4 \\
+x_2 = -x_3 - x_4
+\end{cases}
+\]
+
+\subsection*{Step 4: Construct special solutions}
+
+\begin{itemize}
+\item For $x_3 = 1$, $x_4 = 0$:
+    \[
+    x_1 = -1,\quad x_2 = -1 \quad \Rightarrow \quad
+    \mathbf{v}_1 = \begin{bmatrix} -1 \\ -1 \\ 1 \\ 0 \end{bmatrix}.
+    \]
+    \item For $x_3 = 0$, $x_4 = 1$:
+    \[
+    x_1 = -2,\quad x_2 = -1 \quad \Rightarrow \quad
+    \mathbf{v}_2 = \begin{bmatrix} -2 \\ -1 \\ 0 \\ 1 \end{bmatrix}.
+    \]
+\end{itemize}
+
+
+\section*{Left Null Space}
+
+Let $A$ be an $m \times n$ real matrix. The \textbf{left null space} of $A$ is defined as
+\[
+\operatorname{Nul}(A^\top) = \{ \mathbf{y} \in \mathbb{R}^m : A^\top \mathbf{y} = \mathbf{0} \}
+= \{ \mathbf{y} \in \mathbb{R}^m : \mathbf{y}^\top A = \mathbf{0}^\top \}.
+\]
+Its dimension is $m - r$, where $r = \operatorname{rank}(A)$. We now describe a systematic method to compute a basis for this subspace using Gaussian elimination.
+
+\section*{Method: Using the Elimination Matrix}
+
+The key idea is to record the row operations used to reduce $A$ to reduced row echelon form (RREF). This is done by augmenting $A$ with the identity matrix and performing simultaneous row reduction.
+
+\subsection*{Step 1: Form the augmented matrix}
+Construct the $m \times (n + m)$ matrix
+\[
+\left[\, A \ \middle|\ I_m \,\right],
+\]
+where $I_m$ is the $m \times m$ identity matrix.
+
+\subsection*{Step 2: Row-reduce to RREF}
+Apply Gaussian elimination (with back-substitution to achieve reduced form) to the left block, performing the same elementary row operations on the entire augmented matrix. The result is
+\[
+\left[\, R \ \middle|\ E \,\right],
+\]
+where:
+\begin{itemize}
+\item $R$ is the reduced row echelon form of $A$,
+    \item $E$ is an $m \times m$ invertible matrix satisfying $EA = R$.
+\end{itemize}
+\subsection*{Step 3: Determine the rank}
+Let $r = \operatorname{rank}(A)$ be the number of nonzero rows in $R$. By the definition of RREF, $R$ has the block structure
+\[
+R = \begin{bmatrix} R_1 \\ \mathbf{0} \end{bmatrix},
+\]
+where $R_1$ is $r \times n$ and $\mathbf{0}$ is $(m - r) \times n$.
+
+\subsection*{Step 4: Partition $E$}
+Write $E$ in conformal block form:
+\[
+E = \begin{bmatrix} E_1 \\ E_2 \end{bmatrix},
+\]
+where $E_1$ is $r \times m$ and $E_2$ is $(m - r) \times m$ (the last $m - r$ rows of $E$).
+
+Since $EA = R$, we have
+\[
+\begin{bmatrix} E_1 A \\ E_2 A \end{bmatrix} = \begin{bmatrix} R_1 \\ \mathbf{0} \end{bmatrix}
+\quad \Longrightarrow \quad
+E_2 A = \mathbf{0}.
+\]
+
+\subsection*{Step 5: Interpret $E_2 A = \mathbf{0}$}
+The equation $E_2 A = \mathbf{0}$ means that each row $\mathbf{y}^\top$ of $E_2$ satisfies
+\[
+\mathbf{y}^\top A = \mathbf{0}^\top
+\quad \Longleftrightarrow \quad
+A^\top \mathbf{y} = \mathbf{0}.
+\]
+Thus, every row of $E_2$ (as a column vector) lies in $\operatorname{Nul}(A^\top)$.
+
+\subsection*{Step 6: Conclude a basis}
+\begin{itemize}
+\item $E_2$ has $m - r$ rows.
+    \item Since $E$ is invertible, its rows are linearly independent; hence the rows of $E_2$ are linearly independent.
+    \item $\dim(\operatorname{Nul}(A^\top)) = m - r$ (by the Rank--Nullity Theorem applied to $A^\top$).
+\end{itemize}
+
+Therefore, the rows of $E_2$, when written as column vectors, form a basis for $\operatorname{Nul}(A^\top)$.
+
+\section*{Worked Example}
+
+Let
+\[
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6 \\
+1 & 1 & 2
+\end{bmatrix}.
+\]
+
+\textbf{Step 1:} Form $[A \mid I_3]$:
+\[
+\left[\, A \mid I_3 \,\right] =
+\begin{bmatrix}
+1 & 2 & 3 & \vline & 1 & 0 & 0 \\
+2 & 4 & 6 & \vline & 0 & 1 & 0 \\
+1 & 1 & 2 & \vline & 0 & 0 & 1
+\end{bmatrix}.
+\]
+
+\textbf{Step 2:} Row-reduce to RREF:
+\[
+\left[\, R \mid E \,\right] =
+\begin{bmatrix}
+1 & 0 & 1 & \vline & -1 & 0 & 2 \\
+0 & 1 & 1 & \vline & 1 & 0 & -1 \\
+0 & 0 & 0 & \vline & -2 & 1 & 0
+\end{bmatrix}.
+\]
+
+\textbf{Step 3:} Rank $r = 2$, so $m - r = 1$.
+
+\textbf{Step 4:} The last row of $E$ is $[-2\ 1\ 0]$.
+
+\textbf{Step 5:} Verify:
+\[
+[-2\ 1\ 0] A = [0\ 0\ 0].
+\]
+
+\textbf{Step 6:} A basis for $\operatorname{Nul}(A^\top)$ is
+\[
+\left\{ \begin{bmatrix} -2 \\ 1 \\ 0 \end{bmatrix} \right\}.
+\]
+
+\section*{Summary of the Procedure}
+
+To find a basis for $\operatorname{Nul}(A^\top)$:
+\begin{enumerate}
+    \item Form the augmented matrix $[\, A \mid I_m \,]$.
+    \item Row-reduce the left block to RREF, applying the same operations to the right block to obtain $[\, R \mid E \,]$.
+    \item Let $r = \operatorname{rank}(A)$ (number of nonzero rows in $R$).
+    \item Extract the last $m - r$ rows of $E$.
+    \item Transpose each of these rows to column vectors; the resulting set is a basis for $\operatorname{Nul}(A^\top)$.
+\end{enumerate}
+
+\begin{remark}
+The left null space consists of all linear combinations of the rows of $A$ that yield the zero vector. The last $m - r$ rows of $E$ encode precisely those combinations, which is why they form a basis.
+\end{remark}
+
+\begin{remark}
+Do \textbf{not} use the zero rows of $R$—they are trivial. The useful information is stored in the corresponding rows of $E$.
+\end{remark}
+
+
+\subsection*{Step 5: Basis for the Left Null Space $\operatorname{Nul}(A^\top)$}
+
+
+Let $A$ be an $m \times n$ real matrix. The \textbf{left null space} of $A$ is defined as
+\[
+\operatorname{Nul}(A^\top) = \{ \mathbf{y} \in \mathbb{R}^m : A^\top \mathbf{y} = \mathbf{0} \}
+= \{ \mathbf{y} \in \mathbb{R}^m : \mathbf{y}^\top A = \mathbf{0}^\top \}.
+\]
+Its dimension is $m - r$, where $r = \operatorname{rank}(A)$. We now describe a systematic method to compute a basis for this subspace using Gaussian elimination.
+
+\begin{remark}
+The left null space consists of all linear combinations of the rows of $A$ that yield the zero vector. The last $m - r$ rows of $E$ encode precisely those combinations, which is why they form a basis.
+\end{remark}
+
+\begin{remark}
+Do \textbf{not} use the zero rows of $R$—they are trivial. The useful information is stored in the corresponding rows of $E$.
+\end{remark}
+
+
+\end{document}

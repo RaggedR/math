@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\title{Orthogonal Projection Proof}
+\author{}
+\date{}
+\maketitle
+\Large
+
+\section*{Definition}
+A matrix $P \in \mathbb{R}^{n \times n}$ is an \textbf{orthogonal projection} if for any $\mathbf{x} \in \mathbb{R}^n$:
+\begin{enumerate}
+    \item $P\mathbf{x}$ is in the subspace $W$
+    \item $\mathbf{x} - P\mathbf{x}$ is orthogonal to $W$
+    \item $P^2 = P$ (idempotent)
+\end{enumerate}
+
+\section*{Proof that $P^T = P$}
+
+Let $P$ be an orthogonal projection matrix. For any vectors $\mathbf{u}, \mathbf{v} \in \mathbb{R}^n$:
+
+Since $P\mathbf{u} \in W$ and $\mathbf{v} - P\mathbf{v} \in W^\perp$, their dot product is zero:
+\[
+(P\mathbf{u}) \cdot (\mathbf{v} - P\mathbf{v}) = 0
+\]
+
+In matrix form (using $\mathbf{a} \cdot \mathbf{b} = \mathbf{a}^T\mathbf{b}$):
+\[
+(P\mathbf{u})^T(\mathbf{v} - P\mathbf{v}) = 0
+\]
+
+Expand the expression:
+\[
+\mathbf{u}^T P^T \mathbf{v} - \mathbf{u}^T P^T P \mathbf{v} = 0
+\]
+
+Factor out $\mathbf{u}^T$ and $\mathbf{v}$:
+\[
+\mathbf{u}^T (P^T - P^T P) \mathbf{v} = 0
+\]
+
+Since this holds for \textbf{all} $\mathbf{u}, \mathbf{v}$, we must have:
+\[
+P^T - P^T P = 0 \quad \Rightarrow \quad P^T = P^T P \quad (1)
+\]
+
+Now consider the reverse case: $\mathbf{u} - P\mathbf{u} \in W^\perp$ and $P\mathbf{v} \in W$, so:
+\[
+(\mathbf{u} - P\mathbf{u}) \cdot (P\mathbf{v}) = 0
+\]
+
+In matrix form:
+\[
+(\mathbf{u} - P\mathbf{u})^T (P\mathbf{v}) = 0
+\]
+
+Expand:
+\[
+\mathbf{u}^T P \mathbf{v} - (P\mathbf{u})^T P \mathbf{v} = 0
+\]
+
+\[
+\mathbf{u}^T P \mathbf{v} - \mathbf{u}^T P^T P \mathbf{v} = 0
+\]
+
+\[
+\mathbf{u}^T (P - P^T P) \mathbf{v} = 0
+\]
+
+Since this holds for all $\mathbf{u}, \mathbf{v}$:
+\[
+P - P^T P = 0 \quad \Rightarrow \quad P = P^T P \quad (2)
+\]
+
+From (1) and (2):
+\[
+P^T = P^T P = P
+\]
+
+Therefore:
+\[
+\boxed{P^T = P}
+\]
+
+\textbf{Q.E.D.}
+
+\end{document}
