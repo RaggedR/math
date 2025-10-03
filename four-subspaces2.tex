@@ -9,6 +9,9 @@
 \newcommand{\nul}{\operatorname{Nul}}
 \newcommand{\col}{\operatorname{Col}}
 \newcommand{\row}{\operatorname{Row}}
+\newcommand{\R}{\mathbb{R}}
+
+
 
 \geometry{margin=1in}
 \titleformat{\section}{\large\bfseries}{}{0em}{}
@@ -268,10 +271,7 @@ It is important to note that these two subspaces to {\emph not} lie in the same 
 
 By similar reasoning the \emph{image} of $A^T$ is the subspace of $\mathbb{R}^n$ consisting of vectors of the form $A^Tv$ where $v \in \mathbb{R}^m$. This is also called the \emph{column space} of $A^T$ and denoted by $\mathrm{Col}(A^T)$. This subspace is sometimes also called the \emph{row space} of $A$.
 
-The \emph{kernel} of $A^T$ is the subspace of $\mathbb{R}^m$ consisting of vecors $v$ such that $A^Tv = 0$. This is also called the \emph{null space} of $A^T$ and denoted by $\mathrm{Nul}(A^T)$. This subspace is sometimes called the \emph{annihilator} of $\mathrm{Col}(A)$
-
-
-
+The \emph{kernel} of $A^T$ is the subspace of $\mathbb{R}^m$ consisting of vecors $v$ such that $A^Tv = 0$. This is also called the \emph{null space} of $A^T$ and denoted by $\mathrm{Nul}(A^T)$. 
 
 We have:
 
@@ -351,6 +351,183 @@ Therefore:
 
 
 
+\section*{Theorem (Rank--Nullity Theorem)}
+
+Let $ T: V \to W $ be a linear transformation between finite-dimensional vector spaces over a field $ \mathbb{R} $. Then
+\[
+\dim(V) = \dim(\ker T) + \dim(\operatorname{Im} T).
+\]
+
+In particular, for any $ m \times n $ matrix $ A $ over $ \mathbb{R} $, viewing $ A $ as a linear map $ \mathbb{R}^n \to \mathbb{R}^m $, we have
+\[
+n = \operatorname{nullity}(A) + \operatorname{rank}(A).
+\]
+
+\section*{Proof}
+
+Let $ K = \ker T \subseteq V $. Since $ V $ is finite-dimensional, so is $ K $. Let
+\[
+\{ \mathbf{u}_1, \dots, \mathbf{u}_k \}
+\]
+be a basis for $ K $, so $ k = \dim(\ker T) $.
+
+Extend this to a basis for all of $ V $:
+\[
+\{ \mathbf{u}_1, \dots, \mathbf{u}_k, \mathbf{v}_1, \dots, \mathbf{v}_r \},
+\]
+so that $ \dim(V) = k + r $.
+
+We claim that the set
+\[
+\{ T(\mathbf{v}_1), \dots, T(\mathbf{v}_r) \}
+\]
+is a basis for $ \operatorname{Im} T $.
+
+\subsection*{1. Spanning}
+
+Let $ \mathbf{w} \in \operatorname{Im} T $. Then $ \mathbf{w} = T(\mathbf{x}) $ for some $ \mathbf{x} \in V $. Write
+\[
+\mathbf{x} = \sum_{i=1}^k a_i \mathbf{u}_i + \sum_{j=1}^r b_j \mathbf{v}_j.
+\]
+Applying $ T $, and using $ T(\mathbf{u}_i) = \mathbf{0} $ (since $ \mathbf{u}_i \in \ker T $), we get
+\[
+T(\mathbf{x}) = \sum_{j=1}^r b_j T(\mathbf{v}_j).
+\]
+Thus, $ \{ T(\mathbf{v}_1), \dots, T(\mathbf{v}_r) \} $ spans $ \operatorname{Im} T $.
+
+\subsection*{2. Linear Independence}
+
+Suppose
+\[
+\sum_{j=1}^r c_j T(\mathbf{v}_j) = \mathbf{0}.
+\]
+Then
+\[
+T\left( \sum_{j=1}^r c_j \mathbf{v}_j \right) = \mathbf{0},
+\]
+so $ \sum_{j=1}^r c_j \mathbf{v}_j \in \ker T = \operatorname{span}\{ \mathbf{u}_1, \dots, \mathbf{u}_k \} $.
+
+But the full set $ \{ \mathbf{u}_1, \dots, \mathbf{u}_k, \mathbf{v}_1, \dots, \mathbf{v}_r \} $ is linearly independent.  
+Therefore, the only linear combination of the $ \mathbf{v}_j $'s that lies in $ \operatorname{span}\{ \mathbf{u}_1, \dots, \mathbf{u}_k \} $ is the trivial one.  
+Hence, $ c_j = 0 $ for all $ j $, and the set $ \{ T(\mathbf{v}_1), \dots, T(\mathbf{v}_r) \} $ is linearly independent.
+
+\subsection*{3. Conclusion}
+
+We have shown that $ \dim(\operatorname{Im} T) = r $. Since $ \dim(V) = k + r $, it follows that
+\[
+\dim(V) = \dim(\ker T) + \dim(\operatorname{Im} T).
+\]
+
+This completes the proof.
+
+
+\section*{Introduction}
+
+A fundamental fact in linear algebra is that the rank of a matrix $ A $ is equal to the rank of its transpose $ A^\top $.  
+In other words, the maximum number of linearly independent \textbf{columns} of $ A $ is the same as the maximum number of linearly independent \textbf{rows} of $ A $.
+
+This might seem surprising at first—after all, rows and columns live in different spaces!  
+But in $ \mathbb{R}^n $ (or $ \mathbb{C}^n $), the presence of an inner product (the dot product) creates a deep symmetry between rows and columns.
+
+We will prove this result using two key ideas:
+\begin{enumerate}
+    \item The \textbf{Rank--Nullity Theorem},
+    \item The \textbf{orthogonal relationship} between the null space and the row space.
+\end{enumerate}
+
+This proof works for real matrices (and complex matrices with minor adjustments), but it relies on the geometry of the dot product.
+
+\section*{Step 1: What the Rank--Nullity Theorem Tells Us}
+
+Let $ A $ be an $ m \times n $ real matrix.  
+We can think of $ A $ as a linear transformation that maps vectors from $ \mathbb{R}^n $ to $ \mathbb{R}^m $.
+
+The Rank--Nullity Theorem says:
+\[
+\text{(dimension of domain)} = \text{(dimension of null space)} + \text{(dimension of column space)}.
+\]
+
+In symbols:
+\[
+n = \dim(\operatorname{Nul}(A)) + \dim(\operatorname{Col}(A)).
+\tag{1}
+\]
+
+Here:
+\begin{itemize}
+\item $ \operatorname{Nul}(A) = \{ \mathbf{x} \in \mathbb{R}^n : A\mathbf{x} = \mathbf{0} \} $ is the set of vectors that $ A $ sends to zero,
+    \item $ \operatorname{Col}(A) $ is the span of the columns of $ A $, and its dimension is the \textbf{column rank} of $ A $.
+\end{itemize}
+
+\section*{Step 2: The Geometric Link Between Rows and Null Space}
+
+Now consider the \textbf{row space} of $ A $, denoted $ \operatorname{Row}(A) $.  
+This is the subspace of $ \mathbb{R}^n $ spanned by the rows of $ A $.
+
+Here’s the key geometric insight:
+
+\begin{center}
+\textbf{A vector $ \mathbf{x} $ is in the null space of $ A $ if and only if it is perpendicular to every row of $ A $.}
+\end{center}
+
+Why? Because the equation $ A\mathbf{x} = \mathbf{0} $ means that the dot product of each row of $ A $ with $ \mathbf{x} $ is zero.
+
+In other words:
+\[
+\operatorname{Nul}(A) = \{ \mathbf{x} \in \mathbb{R}^n : \mathbf{x} \perp \mathbf{r} \text{ for every row } \mathbf{r} \text{ of } A \}.
+\]
+
+This is precisely the definition of the \textbf{orthogonal complement} of the row space. So we have:
+\[
+\operatorname{Nul}(A) = \operatorname{Row}(A)^\perp.
+\tag{2}
+\]
+
+\section*{Step 3: Use Dimensions of Orthogonal Complements}
+
+In $ \mathbb{R}^n $, if $ S $ is any subspace, then:
+\[
+\dim(S) + \dim(S^\perp) = n.
+\]
+
+Apply this to $ S = \operatorname{Row}(A) $. Using (2), we get:
+\[
+\dim(\operatorname{Row}(A)) + \dim(\operatorname{Nul}(A)) = n.
+\tag{3}
+\]
+
+But $ \dim(\operatorname{Row}(A)) $ is exactly the \textbf{row rank} of $ A $.
+
+\section*{Step 4: Compare with Rank--Nullity}
+
+Now look back at equation (1) from Rank--Nullity:
+\[
+n = \dim(\operatorname{Nul}(A)) + \dim(\operatorname{Col}(A)).
+\]
+
+And equation (3) from orthogonality:
+\[
+n = \dim(\operatorname{Nul}(A)) + \dim(\operatorname{Row}(A)).
+\]
+
+Both right-hand sides equal $ n $, and both contain the term $ \dim(\operatorname{Nul}(A)) $.  
+Therefore, the remaining terms must be equal:
+\[
+\dim(\operatorname{Col}(A)) = \dim(\operatorname{Row}(A)).
+\]
+
+In other words:
+\[
+\text{column rank of } A = \text{row rank of } A.
+\]
+
+Since the row rank of $ A $ is the same as the column rank of $ A^\top $, we conclude:
+\[
+\operatorname{rank}(A) = \operatorname{rank}(A^\top).
+\]
+
+
+
 
 
 
@@ -370,6 +547,11 @@ Therefore:
 
 
 \newpage
+
+
+
+Emphasize early on that the identification $\mathbb{R}^n \cong \mathbb{R}^{n*}$  is not algebraic but geometric (requires an inner product). This explains why the annihilator (algebraic) becomes the orthogonal complement (geometric) only in inner product spaces.
+
 
 
 \section*{The Dual Space}
@@ -484,7 +666,7 @@ In $ \mathbb{R}^n $ and $ \mathbb{R}^m $, the dot product identifies vectors wit
 
 \section*{Some intuition}
 
-It can sometimes help to think of vectors in $V$ as column vectors and vectors in $V^*$ as row vectors. The dot product is now the application of a linear functional to a vector. The transpose is the isomoprhism between $V$ and $V^*$.
+It can sometimes help to think of vectors in $V$ as column vectors and vectors in $V^*$ as row vectors. The dot product is now the application of a linear functional to a vector. The transpose is the isomoprhism between $V$ and $V^*$. The dot product provides the isomorphism
 
 
 
@@ -721,56 +903,130 @@ where the annihilator is taken inside the appropriate dual space, and the isomor
 
 \medskip
 
-\noindent\textbf{1. Proof that $\nul(A^\top) \cong (\col(A))^\circ$.}
 
-Recall:
-\[
-\col(A) = \{ A\mathbf{x} : \mathbf{x} \in \mathbb{R}^n \} \subseteq \mathbb{R}^m.
-\]
-Its annihilator (in $(\mathbb{R}^m)^*$) is
-\[
-(\col(A))^\circ = \{ f \in (\mathbb{R}^m)^* : f(\mathbf{y}) = 0 \text{ for all } \mathbf{y} \in \col(A) \}.
-\]
 
-Under the dot product identification, a functional $f \in (\mathbb{R}^m)^*$ corresponds to a unique vector $\mathbf{v} \in \mathbb{R}^m$ such that $f(\mathbf{y}) = \mathbf{v}^\top \mathbf{y}$ for all $\mathbf{y} \in \mathbb{R}^m$.
 
-Thus, $\mathbf{v} \in \mathbb{R}^m$ corresponds to an element of $(\col(A))^\circ$ iff
-\[
-\mathbf{v}^\top (A\mathbf{x}) = 0 \quad \text{for all } \mathbf{x} \in \mathbb{R}^n.
-\]
-But $\mathbf{v}^\top A \mathbf{x} = (A^\top \mathbf{v})^\top \mathbf{x}$, so this holds for all $\mathbf{x}$ iff $A^\top \mathbf{v} = \mathbf{0}$.
 
-Hence,
+
+
+\section*{Connection Between Null Space and Annihilator via the Dot Product}
+
+Let $A$ be an $m \times n$ real matrix. We will prove that, under the natural identification of vectors in $\R^m$ with linear functionals on $\R^m$ provided by the standard dot product, the null space of $A^\top$ corresponds exactly to the annihilator of the column space of $A$. That is,
 \[
-\mathbf{v} \in \nul(A^\top) \quad \Longleftrightarrow \quad f_{\mathbf{v}} \in (\col(A))^\circ.
-\]
-Therefore, the dot product isomorphism restricts to an isomorphism
-\[
-\nul(A^\top) \xrightarrow{\sim} (\col(A))^\circ.
+\nul(A^\top) \cong (\col(A))^\circ.
 \]
 
-\medskip
+We proceed step by step, explaining the meaning of each concept and how they relate.
+
+\subsection*{Step 1: The dot product gives a canonical isomorphism $\R^m \cong (\R^m)^*$}
+
+In $\R^m$, the standard dot product allows us to associate every vector $\mathbf{v} \in \R^m$ with a linear functional $f_{\mathbf{v}} \in (\R^m)^*$ via the rule
+\[
+f_{\mathbf{v}}(\mathbf{y}) = \mathbf{v} \cdot \mathbf{y} = \mathbf{v}^\top \mathbf{y}, \quad \text{for all } \mathbf{y} \in \R^m.
+\]
+This map $\mathbf{v} \mapsto f_{\mathbf{v}}$ is:
+\begin{itemize}
+\item \textbf{Linear}: $f_{\alpha \mathbf{v} + \beta \mathbf{w}} = \alpha f_{\mathbf{v}} + \beta f_{\mathbf{w}}$,
+    \item \textbf{Injective}: if $f_{\mathbf{v}} = 0$, then $\mathbf{v}^\top \mathbf{y} = 0$ for all $\mathbf{y}$, so in particular $\mathbf{v}^\top \mathbf{v} = \|\mathbf{v}\|^2 = 0$, hence $\mathbf{v} = \mathbf{0}$,
+    \item \textbf{Surjective}: given any linear functional $f \in (\R^m)^*$, define $v_i = f(\mathbf{e}_i)$ where $\{\mathbf{e}_i\}$ is the standard basis; then $f(\mathbf{y}) = \sum_i v_i y_i = \mathbf{v}^\top \mathbf{y}$.
+\end{itemize}
+
+
+Thus, this correspondence is a vector space isomorphism:
+\[
+\R^m \xrightarrow{\ \sim\ } (\R^m)^*, \quad \mathbf{v} \longmapsto f_{\mathbf{v}}.
+\]
+
+\subsection*{Step 2: What is the annihilator $(\col(A))^\circ$?}
+
+The \textbf{column space} of $A$ is the subspace of $\R^m$ defined by
+\[
+\col(A) = \{ A\mathbf{x} \mid \mathbf{x} \in \R^n \} \subseteq \R^m.
+\]
+Its \textbf{annihilator} is the set of all linear functionals on $\R^m$ that vanish on every vector in $\col(A)$:
+\[
+(\col(A))^\circ = \left\{ f \in (\R^m)^* \,\middle|\, f(\mathbf{y}) = 0 \text{ for all } \mathbf{y} \in \col(A) \right\}.
+\]
+Because every $\mathbf{y} \in \col(A)$ can be written as $\mathbf{y} = A\mathbf{x}$ for some $\mathbf{x} \in \R^n$, we can rephrase this condition as:
+\[
+f \in (\col(A))^\circ \quad \Longleftrightarrow \quad f(A\mathbf{x}) = 0 \text{ for all } \mathbf{x} \in \R^n.
+\]
+
+\subsection*{Step 3: Translate the annihilator condition using the dot product identification}
+
+Now consider a vector $\mathbf{v} \in \R^m$, and let $f_{\mathbf{v}}$ be the corresponding functional: $f_{\mathbf{v}}(\mathbf{y}) = \mathbf{v}^\top \mathbf{y}$.  
+We ask: \textit{When does $f_{\mathbf{v}}$ belong to $(\col(A))^\circ$?}
+
+By the characterization above, this happens precisely when
+\[
+f_{\mathbf{v}}(A\mathbf{x}) = 0 \quad \text{for all } \mathbf{x} \in \R^n.
+\]
+Substituting the definition of $f_{\mathbf{v}}$, this becomes:
+\begin{equation}
+\label{eq:annihilator-condition}
+\mathbf{v}^\top (A\mathbf{x}) = 0 \quad \text{for all } \mathbf{x} \in \R^n.
+\end{equation}
+
+\subsection*{Step 4: Rewrite the condition using properties of the transpose}
+
+The expression $\mathbf{v}^\top A \mathbf{x}$ is a scalar (a $1 \times 1$ matrix). Using the associative law for matrix multiplication and the identity $(XY)^\top = Y^\top X^\top$, we observe:
+\[
+\mathbf{v}^\top A \mathbf{x} = (\mathbf{v}^\top A) \mathbf{x} = (A^\top \mathbf{v})^\top \mathbf{x}.
+\]
+Thus, condition~\eqref{eq:annihilator-condition} is equivalent to:
+\[
+(A^\top \mathbf{v})^\top \mathbf{x} = 0 \quad \text{for all } \mathbf{x} \in \R^n.
+\]
+
+\subsection*{Step 5: A linear functional is zero everywhere iff its representing vector is zero}
+
+The map $\mathbf{x} \mapsto (A^\top \mathbf{v})^\top \mathbf{x}$ is a linear functional on $\R^n$. The only linear functional that vanishes on \textit{every} vector in $\R^n$ is the zero functional. But under the same dot product identification in $\R^n$, the zero functional corresponds to the zero vector. Therefore, if this is true for all $x$ then we must have:
+\[
+(A^\top \mathbf{v})^\top \mathbf{x} = 0 \text{ for all } \mathbf{x} \in \R^n \quad \Longleftrightarrow \quad A^\top \mathbf{v} = \mathbf{0}.
+\]
+In other words, $\mathbf{v}$ must lie in the null space of $A^\top$.
+
+\subsection*{Step 6: Conclude the correspondence}
+
+We have shown the following chain of equivalences:
+\begin{align*}
+\mathbf{v} \in \nul(A^\top) 
+&\iff A^\top \mathbf{v} = \mathbf{0} \\
+&\iff (A^\top \mathbf{v})^\top \mathbf{x} = 0 \text{ for all } \mathbf{x} \in \R^n \\
+&\iff \mathbf{v}^\top A \mathbf{x} = 0 \text{ for all } \mathbf{x} \in \R^n \\
+&\iff f_{\mathbf{v}}(A\mathbf{x}) = 0 \text{ for all } \mathbf{x} \in \R^n \\
+&\iff f_{\mathbf{v}} \in (\col(A))^\circ.
+\end{align*}
+
+Therefore, under the isomorphism $\mathbf{v} \leftrightarrow f_{\mathbf{v}}$, the subspace $\nul(A^\top) \subseteq \R^m$ corresponds exactly to the subspace $(\col(A))^\circ \subseteq (\R^m)^*$.
+
+\subsection*{Geometric Interpretation}
+
+This result has a clean geometric meaning:  
+a vector $\mathbf{v} \in \R^m$ is orthogonal (with respect to the dot product) to every vector in the column space of $A$ if and only if $A^\top \mathbf{v} = \mathbf{0}$.  
+But ``orthogonal to the column space'' is precisely what it means for the functional $f_{\mathbf{v}}(\mathbf{y}) = \mathbf{v} \cdot \mathbf{y}$ to vanish on $\col(A)$ — i.e., to be in the annihilator.  
+Thus, in $\R^m$, the annihilator $(\col(A))^\circ$ is naturally identified with the orthogonal complement $\col(A)^\perp$, and we recover the familiar fundamental theorem of linear algebra:
+\[
+\nul(A^\top) = \col(A)^\perp.
+\]
+
+\subsection*{Final Statement}
+
+Hence, we conclude:
+\[
+\boxed{\nul(A^\top) \cong (\col(A))^\circ}
+\]
+via the canonical isomorphism induced by the standard dot product on $\R^m$.
+
+
+
+
+
+
 
 \noindent\textbf{2. Proof that $\nul(A) \cong (\row(A))^\circ$.}
 
-Note that $\row(A) = \col(A^\top) \subseteq \mathbb{R}^n$. Applying the previous result to $A^\top$ (which is $n \times m$), we get:
-\[
-\nul((A^\top)^\top) = \nul(A) \cong (\col(A^\top))^\circ = (\row(A))^\circ,
-\]
-where the annihilator is now in $(\mathbb{R}^n)^*$.
-
-Alternatively, argue directly:  
-$\mathbf{x} \in \mathbb{R}^n$ corresponds to $f_{\mathbf{x}} \in (\mathbb{R}^n)^*$ via $f_{\mathbf{x}}(\mathbf{z}) = \mathbf{x}^\top \mathbf{z}$.  
-Then $f_{\mathbf{x}} \in (\row(A))^\circ$ iff $f_{\mathbf{x}}(\mathbf{r}) = 0$ for every row vector $\mathbf{r}$ of $A$ (viewed as elements of $\mathbb{R}^n$).  
-Since any $\mathbf{r} \in \row(A)$ is a linear combination of the rows of $A$, this is equivalent to
-\[
-\mathbf{r}_i \mathbf{x} = 0 \quad \text{for each row } \mathbf{r}_i \text{ of } A,
-\]
-which is precisely $A\mathbf{x} = \mathbf{0}$, i.e., $\mathbf{x} \in \nul(A)$.
-
-Thus, $\nul(A) \cong (\row(A))^\circ$.
-
-\medskip
+This follows immediately by symmetry.
 
 \noindent\textbf{Conclusion.}  
 Via the standard dot product identification $\mathbb{R}^k \cong (\mathbb{R}^k)^*$, we have natural isomorphisms:
@@ -795,21 +1051,6 @@ When we identify $ (\mathbb{R}^k)^* \cong \mathbb{R}^k $ via the dot product, th
 \[
 \operatorname{Nul}(A^\top) = \operatorname{Col}(A)^\perp, \qquad \operatorname{Row}(A) = \operatorname{Nul}(A)^\perp.
 \]
-
-\section*{5. Significance}
-
-\begin{enumerate}
-    \item \textbf{Unification}: The annihilator explains both orthogonal decompositions as instances of a single principle: the kernel of a linear map and the annihilator of its image are naturally paired.
-    
-    \item \textbf{Coordinate-free insight}: The orthogonal relationships hold in any finite-dimensional inner product space—not just for matrices.
-    
-    \item \textbf{Generalization}: In infinite-dimensional spaces (e.g., Hilbert spaces), the same duality holds via the Riesz representation theorem.
-    
-    \item \textbf{Conceptual clarity}: The ``four subspaces'' are really two pairs of dual objects:
-    \item Domain side: $ \operatorname{Row}(A) $ and $ \operatorname{Nul}(A) $,
-        \item Codomain side: $ \operatorname{Col}(A) $ and $ \operatorname{Nul}(A^\top) $.
-\end{enumerate}
-
 \section*{Conclusion}
 
 The annihilator is the abstract mechanism that explains why the four fundamental subspaces form orthogonal complements. It reveals that:
@@ -827,204 +1068,6 @@ Without the concept of the annihilator, these orthogonal relationships appear as
 
 
 
-
-
-
-\section*{Theorem (Rank--Nullity Theorem)}
-
-Let $ T: V \to W $ be a linear transformation between finite-dimensional vector spaces over a field $ \mathbb{F} $. Then
-\[
-\dim(V) = \dim(\ker T) + \dim(\operatorname{Im} T).
-\]
-
-In particular, for any $ m \times n $ matrix $ A $ over $ \mathbb{F} $, viewing $ A $ as a linear map $ \mathbb{F}^n \to \mathbb{F}^m $, we have
-\[
-n = \operatorname{nullity}(A) + \operatorname{rank}(A).
-\]
-
-\section*{Proof}
-
-Let $ K = \ker T \subseteq V $. Since $ V $ is finite-dimensional, so is $ K $. Let
-\[
-\{ \mathbf{u}_1, \dots, \mathbf{u}_k \}
-\]
-be a basis for $ K $, so $ k = \dim(\ker T) $.
-
-Extend this to a basis for all of $ V $:
-\[
-\{ \mathbf{u}_1, \dots, \mathbf{u}_k, \mathbf{v}_1, \dots, \mathbf{v}_r \},
-\]
-so that $ \dim(V) = k + r $.
-
-We claim that the set
-\[
-\{ T(\mathbf{v}_1), \dots, T(\mathbf{v}_r) \}
-\]
-is a basis for $ \operatorname{Im} T $.
-
-\subsection*{1. Spanning}
-
-Let $ \mathbf{w} \in \operatorname{Im} T $. Then $ \mathbf{w} = T(\mathbf{x}) $ for some $ \mathbf{x} \in V $. Write
-\[
-\mathbf{x} = \sum_{i=1}^k a_i \mathbf{u}_i + \sum_{j=1}^r b_j \mathbf{v}_j.
-\]
-Applying $ T $, and using $ T(\mathbf{u}_i) = \mathbf{0} $ (since $ \mathbf{u}_i \in \ker T $), we get
-\[
-T(\mathbf{x}) = \sum_{j=1}^r b_j T(\mathbf{v}_j).
-\]
-Thus, $ \{ T(\mathbf{v}_1), \dots, T(\mathbf{v}_r) \} $ spans $ \operatorname{Im} T $.
-
-\subsection*{2. Linear Independence}
-
-Suppose
-\[
-\sum_{j=1}^r c_j T(\mathbf{v}_j) = \mathbf{0}.
-\]
-Then
-\[
-T\left( \sum_{j=1}^r c_j \mathbf{v}_j \right) = \mathbf{0},
-\]
-so $ \sum_{j=1}^r c_j \mathbf{v}_j \in \ker T = \operatorname{span}\{ \mathbf{u}_1, \dots, \mathbf{u}_k \} $.
-
-But the full set $ \{ \mathbf{u}_1, \dots, \mathbf{u}_k, \mathbf{v}_1, \dots, \mathbf{v}_r \} $ is linearly independent.  
-Therefore, the only linear combination of the $ \mathbf{v}_j $'s that lies in $ \operatorname{span}\{ \mathbf{u}_1, \dots, \mathbf{u}_k \} $ is the trivial one.  
-Hence, $ c_j = 0 $ for all $ j $, and the set $ \{ T(\mathbf{v}_1), \dots, T(\mathbf{v}_r) \} $ is linearly independent.
-
-\subsection*{3. Conclusion}
-
-We have shown that $ \dim(\operatorname{Im} T) = r $. Since $ \dim(V) = k + r $, it follows that
-\[
-\dim(V) = \dim(\ker T) + \dim(\operatorname{Im} T).
-\]
-
-This completes the proof.
-
-\section*{Remarks}
-
-\begin{itemize}
-\item This proof uses no matrices, coordinates, or row reduction.
-    \item It works over any field (e.g., $ \mathbb{R} $, $ \mathbb{C} $, finite fields).
-    \item It reveals that Rank--Nullity is a structural property of linear maps, not a computational artifact.
-\end{itemize}
-
-
-
-\section*{Introduction}
-
-A fundamental fact in linear algebra is that the rank of a matrix $ A $ is equal to the rank of its transpose $ A^\top $.  
-In other words, the maximum number of linearly independent \textbf{columns} of $ A $ is the same as the maximum number of linearly independent \textbf{rows} of $ A $.
-
-This might seem surprising at first—after all, rows and columns live in different spaces!  
-But in $ \mathbb{R}^n $ (or $ \mathbb{C}^n $), the presence of an inner product (the dot product) creates a deep symmetry between rows and columns.
-
-We will prove this result using two key ideas:
-\begin{enumerate}
-    \item The \textbf{Rank--Nullity Theorem},
-    \item The \textbf{orthogonal relationship} between the null space and the row space.
-\end{enumerate}
-
-This proof works for real matrices (and complex matrices with minor adjustments), but it relies on the geometry of the dot product.
-
-\section*{Step 1: What the Rank--Nullity Theorem Tells Us}
-
-Let $ A $ be an $ m \times n $ real matrix.  
-We can think of $ A $ as a linear transformation that maps vectors from $ \mathbb{R}^n $ to $ \mathbb{R}^m $.
-
-The Rank--Nullity Theorem says:
-\[
-\text{(dimension of domain)} = \text{(dimension of null space)} + \text{(dimension of column space)}.
-\]
-
-In symbols:
-\[
-n = \dim(\operatorname{Nul}(A)) + \dim(\operatorname{Col}(A)).
-\tag{1}
-\]
-
-Here:
-\begin{itemize}
-\item $ \operatorname{Nul}(A) = \{ \mathbf{x} \in \mathbb{R}^n : A\mathbf{x} = \mathbf{0} \} $ is the set of vectors that $ A $ sends to zero,
-    \item $ \operatorname{Col}(A) $ is the span of the columns of $ A $, and its dimension is the \textbf{column rank} of $ A $.
-\end{itemize}
-
-\section*{Step 2: The Geometric Link Between Rows and Null Space}
-
-Now consider the \textbf{row space} of $ A $, denoted $ \operatorname{Row}(A) $.  
-This is the subspace of $ \mathbb{R}^n $ spanned by the rows of $ A $.
-
-Here’s the key geometric insight:
-
-\begin{center}
-\textbf{A vector $ \mathbf{x} $ is in the null space of $ A $ if and only if it is perpendicular to every row of $ A $.}
-\end{center}
-
-Why? Because the equation $ A\mathbf{x} = \mathbf{0} $ means that the dot product of each row of $ A $ with $ \mathbf{x} $ is zero.
-
-In other words:
-\[
-\operatorname{Nul}(A) = \{ \mathbf{x} \in \mathbb{R}^n : \mathbf{x} \perp \mathbf{r} \text{ for every row } \mathbf{r} \text{ of } A \}.
-\]
-
-This is precisely the definition of the \textbf{orthogonal complement} of the row space. So we have:
-\[
-\operatorname{Nul}(A) = \operatorname{Row}(A)^\perp.
-\tag{2}
-\]
-
-\section*{Step 3: Use Dimensions of Orthogonal Complements}
-
-In $ \mathbb{R}^n $, if $ S $ is any subspace, then:
-\[
-\dim(S) + \dim(S^\perp) = n.
-\]
-
-Apply this to $ S = \operatorname{Row}(A) $. Using (2), we get:
-\[
-\dim(\operatorname{Row}(A)) + \dim(\operatorname{Nul}(A)) = n.
-\tag{3}
-\]
-
-But $ \dim(\operatorname{Row}(A)) $ is exactly the \textbf{row rank} of $ A $.
-
-\section*{Step 4: Compare with Rank--Nullity}
-
-Now look back at equation (1) from Rank--Nullity:
-\[
-n = \dim(\operatorname{Nul}(A)) + \dim(\operatorname{Col}(A)).
-\]
-
-And equation (3) from orthogonality:
-\[
-n = \dim(\operatorname{Nul}(A)) + \dim(\operatorname{Row}(A)).
-\]
-
-Both right-hand sides equal $ n $, and both contain the term $ \dim(\operatorname{Nul}(A)) $.  
-Therefore, the remaining terms must be equal:
-\[
-\dim(\operatorname{Col}(A)) = \dim(\operatorname{Row}(A)).
-\]
-
-In other words:
-\[
-\text{column rank of } A = \text{row rank of } A.
-\]
-
-Since the row rank of $ A $ is the same as the column rank of $ A^\top $, we conclude:
-\[
-\operatorname{rank}(A) = \operatorname{rank}(A^\top).
-\]
-
-\section*{Conclusion}
-
-The equality of row and column rank is not a coincidence—it is a consequence of the **geometric structure** of Euclidean space.  
-The dot product creates a perfect pairing between the row space and the null space, and the Rank--Nullity Theorem translates this geometric fact into an algebraic equality of dimensions.
-
-This proof beautifully ties together:
-\begin{itemize}
-\item Linear algebra (Rank--Nullity),
-    \item Geometry (orthogonality),
-    \item Matrix theory (rows vs. columns).
-\end{itemize}
 
 \end{document}
 \newpage
