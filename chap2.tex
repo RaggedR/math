@@ -1,0 +1,485 @@
+
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{booktabs}
+
+
+\newcommand{\nul}{\operatorname{Nul}}
+\newcommand{\col}{\operatorname{Col}}
+\newcommand{\row}{\operatorname{Row}}
+\newcommand{\R}{\mathbb{R}}
+
+
+
+\geometry{margin=1in}
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+\titleformat{\subsection}{\bfseries}{}{0em}{}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\title{The Dual Space}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\Large
+
+
+
+
+\section*{\huge The Dual Space}
+
+Hopefully the reader has seen the idea of the \emph{dual space} before, otherwise this section will probably be a little confusing. 
+
+Let $ V $ be a finite dimensional vector space over the real numbers $ \mathbb{R} $  
+The \textbf{dual space} of $ V $, denoted $ V^* $, is the set of all \textbf{linear functionals} on $ V $. That is,
+\[
+V^* = \{ f: V \to \mathbb{R} \mid f \text{ is linear} \}.
+\]
+
+A \textbf{linear functional} is a function $ f: V \to \mathbb{R} $ such that for all vectors $ \mathbf{u}, \mathbf{v} \in V $ and scalars $ \alpha, \beta \in \mathbb{R} $,
+\[
+f(\alpha \mathbf{u} + \beta \mathbf{v}) = \alpha f(\mathbf{u}) + \beta f(\mathbf{v}).
+\]
+
+The dual space $ V^* $ is itself a vector space over $ \mathbb{R} $, with vector addition and scalar multiplication defined \textit{pointwise}:
+\begin{align*}
+(f + g)(\mathbf{v}) &= f(\mathbf{v}) + g(\mathbf{v}), \\
+(\alpha f)(\mathbf{v}) &= \alpha \, f(\mathbf{v}),
+\end{align*}
+for all $ f, g \in V^* $, $ \alpha \in \mathbb{R} $, and $ \mathbf{v} \in V $.
+
+Suppose that $ \{ \mathbf{e}_1, \dots, \mathbf{e}_n \} $ is a basis for $ V $, then there is a uniquely associated \textbf{dual basis} $ \{ \mathbf{e}^1, \dots, \mathbf{e}^n \} \subseteq V^* $ defined by
+    \[
+    \mathbf{e}^i(\mathbf{e}_j) = \delta^i_j =
+    \begin{cases}
+    1 & \text{if } i = j, \\
+    0 & \text{if } i \ne j.
+    \end{cases}
+    \]
+    
+    Every linear functional $ f \in V^* $ can be uniquely expressed as
+    \[
+    f = \sum_{i=1}^n f(\mathbf{e}_i) \, \mathbf{e}^i.
+    \]
+
+In $\R^m$, the standard dot product allows us to associate every vector $\mathbf{v} \in \R^m$ with a linear functional $f_{\mathbf{v}} \in (\R^m)^*$ via the rule
+\[
+f_{\mathbf{v}}(\mathbf{y}) = \mathbf{v} \cdot \mathbf{y} = \mathbf{v}^\top \mathbf{y}, \quad \text{for all } \mathbf{y} \in \R^m.
+\]
+This map $\mathbf{v} \mapsto f_{\mathbf{v}}$ is:
+\begin{itemize}
+\item \textbf{Linear}: $f_{\alpha \mathbf{v} + \beta \mathbf{w}} = \alpha f_{\mathbf{v}} + \beta f_{\mathbf{w}}$,
+    \item \textbf{Injective}: if $f_{\mathbf{v}} = 0$, then $\mathbf{v}^\top \mathbf{y} = 0$ for all $\mathbf{y}$, so in particular $\mathbf{v}^\top \mathbf{v} = \|\mathbf{v}\|^2 = 0$, hence $\mathbf{v} = \mathbf{0}$,
+    \item \textbf{Surjective}: given any linear functional $f \in (\R^m)^*$, define $v_i = f(\mathbf{e}_i)$ where $\{\mathbf{e}_i\}$ is the standard basis; then $f(\mathbf{y}) = \sum_i v_i y_i = \mathbf{v}^\top \mathbf{y}$.
+\end{itemize}
+
+
+Thus, this correspondence is a vector space isomorphism:
+\[
+\R^m \xrightarrow{\ \sim\ } (\R^m)^*, \quad \mathbf{v} \longmapsto f_{\mathbf{v}}.
+\]
+
+\section*{\huge Some intuition}
+
+It can sometimes help to think of vectors in $V$ as column vectors and vectors in $V^*$ as row vectors. The dot product is now the application of a linear functional to a vector. The transpose is the isomoprhism between $V$ and $V^*$. 
+
+
+\begin{lemma}
+$\dim V^* = \dim V$ for finite-dimensional $V$
+
+\begin{proof}
+
+Let $V$ be a finite-dimensional vector space over a field $\mathbb{R}$, and let $\dim V = n$.  
+Choose a basis $\{e_1, e_2, \dots, e_n\}$ for $V$.
+
+Define linear functionals $e^1, e^2, \dots, e^n \in V^* = \operatorname{Hom}(V, \mathbb{R})$ by
+\[
+e^i(e_j) = \delta^i_j =
+\begin{cases}
+1 & \text{if } i = j, \\
+0 & \text{if } i \ne j,
+\end{cases}
+\quad \text{for all } 1 \le i,j \le n.
+\]
+
+We claim that $\{e^1, \dots, e^n\}$ is a basis for $V^*$.
+
+\medskip
+
+\noindent\textbf{Linear independence:}  
+Suppose $\sum_{i=1}^n a_i e^i = 0$ in $V^*$, where $a_i \in \mathbb{R}$.  
+Applying both sides to $e_j$ gives
+\[
+0 = \left( \sum_{i=1}^n a_i e^i \right)(e_j) = \sum_{i=1}^n a_i e^i(e_j) = \sum_{i=1}^n a_i \delta^i_j = a_j.
+\]
+Thus $a_j = 0$ for all $j$, so the set $\{e^1, \dots, e^n\}$ is linearly independent.
+
+\medskip
+
+\noindent\textbf{Spanning:}  
+Let $f \in V^*$ be arbitrary. Define scalars $c_i = f(e_i) \in \mathbb{R}$ for $i = 1, \dots, n$, and consider the functional
+\[
+g = \sum_{i=1}^n c_i e^i \in V^*.
+\]
+For any basis vector $e_j$, we have
+\[
+g(e_j) = \sum_{i=1}^n c_i e^i(e_j) = \sum_{i=1}^n c_i \delta^i_j = c_j = f(e_j).
+\]
+Since $f$ and $g$ agree on a basis of $V$, they agree on all of $V$; hence $f = g$.  
+Therefore, every $f \in V^*$ is a linear combination of $\{e^1, \dots, e^n\}$, so this set spans $V^*$.
+
+\medskip
+
+Since $\{e^1, \dots, e^n\}$ is a basis for $V^*$, we conclude that
+\[
+\dim V^* = n = \dim V.
+\]
+
+\end{proof}
+\end{lemma}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section*{\huge The Adjoint}
+
+The reason why we have gone to all the trouble of introducing the dual space is that the transpose of a matrix is the natural matrix representation of the \textbf{adjoint} of a linear map. 
+
+\subsection*{\huge The Adjoint of a Linear Map}
+
+Let $ T: V \to W $ be a linear map between finite-dimensional real vector spaces.  
+The \textbf{dual map} $ T^*: W^* \to V^* $ is defined by
+\[
+(T^* f)(\mathbf{v}) = f(T\mathbf{v}) \quad \text{for all } f \in W^*,\ \mathbf{v} \in V.
+\]
+
+In words: to evaluate $ T^* f $ at a vector $ \mathbf{v} $, first apply $ T $ to $ \mathbf{v} $, then apply the functional $ f $ to the result.  
+
+\begin{theorem}
+The matrix of the dual map $ T^* $ is the transpose of the matrix of $ T $.
+\begin{proof}
+Choose bases:
+
+\begin{itemize}
+\item $ \mathcal{B} = \{ \mathbf{v}_1, \dots, \mathbf{v}_n \} $ for $ V $,
+    \item $ \mathcal{C} = \{ \mathbf{w}_1, \dots, \mathbf{w}_m \} $ for $ W $,
+    \item $ \mathcal{B}^* = \{ \mathbf{v}^1, \dots, \mathbf{v}^n \} $ and $ \mathcal{C}^* = \{ \mathbf{w}^1, \dots, \mathbf{w}^m \} $ for the dual bases.
+\end{itemize}
+
+
+Suppose the matrix of $ T $ with respect to $ \mathcal{B}, \mathcal{C} $ is $ A = (a_{ij})$, so
+Then:
+\[
+T(\mathbf{v}_1) = \sum_{i=1}^{m} A_{i1} \, \mathbf{w}_i
+\]
+
+More generally:
+\[
+T(\mathbf{v}_j) = \sum_{i=1}^m a_{ij} \mathbf{w}_i.
+\]
+
+We compute the matrix of $ T^* $ with respect to $ \mathcal{C}^*, \mathcal{B}^* $.  
+For any $ k \in \{1, \dots, m\} $ and $ j \in \{1, \dots, n\} $,
+\[
+(T^* \mathbf{w}^k)(\mathbf{v}_j) = \mathbf{w}^k(T \mathbf{v}_j) = \mathbf{w}^k\left( \sum_{i=1}^m a_{ij} \mathbf{w}_i \right) = a_{kj}.
+\]
+
+On the other hand, if the matrix of $ T^* $ is $ B = (b_{\ell k}) $, then
+\[
+T^*(\mathbf{w}^1) = \sum_{\ell=1}^{n} b_{\ell 1} \, \mathbf{v}^\ell
+\]
+
+
+More generally:
+\[
+T^*(\mathbf{w}^k) = \sum_{\ell=1}^n b_{\ell k} \mathbf{v}^\ell,
+\]
+so
+\[
+(T^* \mathbf{w}^k)(\mathbf{v}_j) = b_{j k}.
+\]
+
+Comparing both expressions gives $ b_{j k} = a_{k j} $, so $ B = A^\top $.
+
+
+That is the matrix of the dual map $ T^* $ is the transpose of the matrix of $ T $.
+\end{proof}
+\end{theorem}
+
+
+
+
+
+
+
+
+
+
+Recall from Chapter 1 that
+tahe key orthogonal decompositions are:
+\[
+\mathbb{R}^n = \operatorname{Row}(A) \oplus \operatorname{Nul}(A), \quad
+\mathbb{R}^m = \operatorname{Col}(A) \oplus \operatorname{Nul}(A^\top),
+\]
+or equivalently:
+\[
+\operatorname{Nul}(A) = \operatorname{Row}(A)^\perp, \quad
+\operatorname{Nul}(A^\top) = \operatorname{Col}(A)^\perp.
+\]
+
+\section*{2. What Is the Annihilator?}
+
+Let $ V $ be a finite-dimensional vector space, and let $ W \subseteq V $ be a subspace.  
+The \textbf{annihilator} of $ W $ is:
+\[
+W^\circ = \{ f \in V^* : f(\mathbf{w}) = 0 \text{ for all } \mathbf{w} \in W \},
+\]
+where $ V^* $ is the \textbf{dual space} (the space of linear functionals on $ V $).
+
+
+\begin{lemma}
+\[
+\dim(W^\circ) = \dim(V) - \dim(W).
+\]
+\begin{proof}
+
+\medskip
+
+\noindent\textbf{Step 1: $W^\circ$ is a subspace of $V^*$.}  
+Clearly $0 \in W^\circ$. If $f,g \in W^\circ$ and $\alpha,\beta \in \mathbb{R}$, then for any $\mathbf{w} \in W$,
+\[
+(\alpha f + \beta g)(\mathbf{w}) = \alpha f(\mathbf{w}) + \beta g(\mathbf{w}) = 0,
+\]
+so $\alpha f + \beta g \in W^\circ$. Hence $W^\circ \leq V^*$.
+
+\medskip
+
+\noindent\textbf{Step 2: Choose a basis adapted to $W$.}  
+Let $\dim V = n$ and $\dim W = k$. Choose a basis
+\[
+\{ \mathbf{w}_1, \dots, \mathbf{w}_k \}
+\]
+for $W$, and extend it to a basis of $V$:
+\[
+\mathcal{B} = \{ \mathbf{w}_1, \dots, \mathbf{w}_k, \mathbf{v}_{k+1}, \dots, \mathbf{v}_n \}.
+\]
+
+Let $\mathcal{B}^* = \{ \mathbf{w}^1, \dots, \mathbf{w}^k, \mathbf{v}^{k+1}, \dots, \mathbf{v}^n \}$ be the dual basis of $V^*$, so that
+\[
+\mathbf{w}^i(\mathbf{w}_j) = \delta^i_j, \quad
+\mathbf{v}^i(\mathbf{v}_j) = \delta^i_j, \quad
+\mathbf{w}^i(\mathbf{v}_j) = 0, \quad
+\mathbf{v}^i(\mathbf{w}_j) = 0
+\]
+for all valid indices.
+
+\medskip
+
+\noindent\textbf{Step 3: Characterize $W^\circ$ using the dual basis.}  
+Let $f \in V^*$. Write $f$ in the dual basis:
+\[
+f = \sum_{i=1}^k a_i \mathbf{w}^i + \sum_{j=k+1}^n b_j \mathbf{v}^j.
+\]
+For any $\mathbf{w} \in W$, we have $\mathbf{w} = \sum_{i=1}^k c_i \mathbf{w}_i$, so
+\[
+f(\mathbf{w}) = \sum_{i=1}^k a_i c_i.
+\]
+Thus $f(\mathbf{w}) = 0$ for all $\mathbf{w} \in W$ if and only if $a_1 = \cdots = a_k = 0$.
+
+Therefore,
+\[
+W^\circ = \operatorname{span}\{ \mathbf{v}^{k+1}, \dots, \mathbf{v}^n \}.
+\]
+
+\medskip
+
+\noindent\textbf{Step 4: Compute the dimension.}  
+The set $\{ \mathbf{v}^{k+1}, \dots, \mathbf{v}^n \}$ is linearly independent and spans $W^\circ$, so it is a basis. Hence
+\[
+\dim(W^\circ) = n - k = \dim(V) - \dim(W).
+\]
+
+\end{proof}
+\end{lemma}
+
+
+
+
+
+
+
+
+
+\section*{3. Connecting Annihilators to the Four Subspaces}
+
+
+
+
+
+\begin{theorem} 
+\[
+\nul(A^\top) \cong (\col(A))^\circ, \qquad
+\nul(A) \cong (\row(A))^\circ,
+\]
+where the annihilator is taken inside the appropriate dual space, and the isomorphism is the one induced by the dot product.
+\begin{proof}
+\medskip
+
+
+
+
+
+
+
+\section*{Connection Between Null Space and Annihilator via the Dot Product}
+
+Let $A$ be an $m \times n$ real matrix. We will prove that, under the natural identification of vectors in $\R^m$ with linear functionals on $\R^m$ provided by the standard dot product, the null space of $A^\top$ corresponds exactly to the annihilator of the column space of $A$. That is,
+\[
+\nul(A^\top) \cong (\col(A))^\circ.
+\]
+
+We proceed step by step, explaining the meaning of each concept and how they relate.
+
+\subsection*{Step 1: The dot product gives a canonical isomorphism $\R^m \cong (\R^m)^*$}
+
+
+
+\subsection*{Step 2: What is the annihilator $(\col(A))^\circ$?}
+
+The \textbf{column space} of $A$ is the subspace of $\R^m$ defined by
+\[
+\col(A) = \{ A\mathbf{x} \mid \mathbf{x} \in \R^n \} \subseteq \R^m.
+\]
+Its \textbf{annihilator} is the set of all linear functionals on $\R^m$ that vanish on every vector in $\col(A)$:
+\[
+(\col(A))^\circ = \left\{ f \in (\R^m)^* \,\middle|\, f(\mathbf{y}) = 0 \text{ for all } \mathbf{y} \in \col(A) \right\}.
+\]
+Because every $\mathbf{y} \in \col(A)$ can be written as $\mathbf{y} = A\mathbf{x}$ for some $\mathbf{x} \in \R^n$, we can rephrase this condition as:
+\[
+f \in (\col(A))^\circ \quad \Longleftrightarrow \quad f(A\mathbf{x}) = 0 \text{ for all } \mathbf{x} \in \R^n.
+\]
+
+\subsection*{Step 3: Translate the annihilator condition using the dot product identification}
+
+Now consider a vector $\mathbf{v} \in \R^m$, and let $f_{\mathbf{v}}$ be the corresponding functional: $f_{\mathbf{v}}(\mathbf{y}) = \mathbf{v}^\top \mathbf{y}$.  
+We ask: \textit{When does $f_{\mathbf{v}}$ belong to $(\col(A))^\circ$?}
+
+By the characterization above, this happens precisely when
+\[
+f_{\mathbf{v}}(A\mathbf{x}) = 0 \quad \text{for all } \mathbf{x} \in \R^n.
+\]
+Substituting the definition of $f_{\mathbf{v}}$, this becomes:
+\begin{equation}
+\label{eq:annihilator-condition}
+\mathbf{v}^\top (A\mathbf{x}) = 0 \quad \text{for all } \mathbf{x} \in \R^n.
+\end{equation}
+
+\subsection*{Step 4: Rewrite the condition using properties of the transpose}
+
+The expression $\mathbf{v}^\top A \mathbf{x}$ is a scalar (a $1 \times 1$ matrix). Using the associative law for matrix multiplication and the identity $(XY)^\top = Y^\top X^\top$, we observe:
+\[
+\mathbf{v}^\top A \mathbf{x} = (\mathbf{v}^\top A) \mathbf{x} = (A^\top \mathbf{v})^\top \mathbf{x}.
+\]
+Thus, condition~\eqref{eq:annihilator-condition} is equivalent to:
+\[
+(A^\top \mathbf{v})^\top \mathbf{x} = 0 \quad \text{for all } \mathbf{x} \in \R^n.
+\]
+
+\subsection*{Step 5: A linear functional is zero everywhere iff its representing vector is zero}
+
+The map $\mathbf{x} \mapsto (A^\top \mathbf{v})^\top \mathbf{x}$ is a linear functional on $\R^n$. The only linear functional that vanishes on \textit{every} vector in $\R^n$ is the zero functional. But under the same dot product identification in $\R^n$, the zero functional corresponds to the zero vector. Therefore, if this is true for all $x$ then we must have:
+\[
+(A^\top \mathbf{v})^\top \mathbf{x} = 0 \text{ for all } \mathbf{x} \in \R^n \quad \Longleftrightarrow \quad A^\top \mathbf{v} = \mathbf{0}.
+\]
+In other words, $\mathbf{v}$ must lie in the null space of $A^\top$.
+
+\subsection*{Step 6: Conclude the correspondence}
+
+We have shown the following chain of equivalences:
+\begin{align*}
+\mathbf{v} \in \nul(A^\top) 
+&\iff A^\top \mathbf{v} = \mathbf{0} \\
+&\iff (A^\top \mathbf{v})^\top \mathbf{x} = 0 \text{ for all } \mathbf{x} \in \R^n \\
+&\iff \mathbf{v}^\top A \mathbf{x} = 0 \text{ for all } \mathbf{x} \in \R^n \\
+&\iff f_{\mathbf{v}}(A\mathbf{x}) = 0 \text{ for all } \mathbf{x} \in \R^n \\
+&\iff f_{\mathbf{v}} \in (\col(A))^\circ.
+\end{align*}
+
+Therefore, under the isomorphism $\mathbf{v} \leftrightarrow f_{\mathbf{v}}$, the subspace $\nul(A^\top) \subseteq \R^m$ corresponds exactly to the subspace $(\col(A))^\circ \subseteq (\R^m)^*$.
+
+\end{proof}
+\end{theorem}
+
+\subsection*{Geometric Interpretation}
+
+This result has a clean geometric meaning:  
+a vector $\mathbf{v} \in \R^m$ is orthogonal (with respect to the dot product) to every vector in the column space of $A$ if and only if $A^\top \mathbf{v} = \mathbf{0}$.  
+But ``orthogonal to the column space'' is precisely what it means for the functional $f_{\mathbf{v}}(\mathbf{y}) = \mathbf{v} \cdot \mathbf{y}$ to vanish on $\col(A)$ — i.e., to be in the annihilator.  
+Thus, in $\R^m$, the annihilator $(\col(A))^\circ$ is naturally identified with the orthogonal complement $\col(A)^\perp$, and we recover the familiar fundamental theorem of linear algebra:
+\[
+\nul(A^\top) = \col(A)^\perp.
+\]
+
+
+
+
+
+
+
+\begin{theorem}
+$\nul(A) \cong (\row(A))^\circ$
+\begin{proof}
+This follows immediately by symmetry.
+\end{proof}
+\end{theorem}
+
+\noindent\textbf{Conclusion.}  
+Via the standard dot product identification $\mathbb{R}^k \cong (\mathbb{R}^k)^*$, we have natural isomorphisms:
+\[
+\boxed{\nul(A^\top) \cong (\col(A))^\circ}, \qquad
+\boxed{\nul(A) \cong (\row(A))^\circ}.
+\]
+
+
+
+The Annihilator reveals that the four subspaces reflect a fundamental duality.  
+The matrix $ A: \mathbb{R}^n \to \mathbb{R}^m $ induces a \textbf{dual map} $ A^*: (\mathbb{R}^m)^* \to (\mathbb{R}^n)^* $, and we have:
+\[
+\ker(A^*) = (\operatorname{Im} A)^\circ, \qquad \operatorname{Im}(A^*) = (\ker A)^\circ.
+\]
+
+When we identify $ (\mathbb{R}^k)^* \cong \mathbb{R}^k $ via the dot product, these become:
+\[
+\operatorname{Nul}(A^\top) = \operatorname{Col}(A)^\perp, \qquad \operatorname{Row}(A) = \operatorname{Nul}(A)^\perp.
+\]
+
+
+\end{document}
+
+
