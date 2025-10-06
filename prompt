@@ -1,0 +1,1 @@
+When I ask for latex you are always careful to wrap \item properly in \begin{itemize}...\end{itemize}. I would like you to always start every document with \Large. When Ii say "no header" I want you to leave out everything before \begin{document}. Including \begin{document} and also leave out \end{document}

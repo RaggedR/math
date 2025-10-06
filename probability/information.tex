@@ -1,0 +1,321 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\title{Why Expectation Is Blind to Dependence—but Variance Is Not}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\Large
+
+One of the most powerful and frequently used properties in probability theory is the \textbf{linearity of expectation}: for any random variables $X_1, X_2, \dots, X_n$,
+\[
+\mathbb{E}\!\left[ \sum_{i=1}^n X_i \right] = \sum_{i=1}^n \mathbb{E}[X_i].
+\]
+Remarkably, this identity holds \textit{regardless of whether the variables are independent, dependent, or even deterministically linked}. No assumptions about joint distributions are needed. This robustness makes expectation an indispensable tool in probabilistic analysis—especially when dealing with complex or unknown dependencies.
+
+In stark contrast, the \textbf{variance of a sum} is highly sensitive to the relationships between variables. For two random variables $X$ and $Y$,
+\[
+\mathrm{Var}(X + Y) = \mathrm{Var}(X) + \mathrm{Var}(Y) + 2\,\mathrm{Cov}(X, Y),
+\]
+where $\mathrm{Cov}(X, Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]$ is the covariance. Only when $\mathrm{Cov}(X, Y) = 0$—i.e., when $X$ and $Y$ are \textbf{uncorrelated}—does variance become additive. Since independence implies zero covariance (but not vice versa), independence is a sufficient—but not necessary—condition for variances to add.
+
+This asymmetry arises because expectation is a \textit{linear} operator, while variance is \textit{quadratic}. The expectation of a sum depends only on marginal averages, but the variance of a sum involves the joint behavior through $\mathbb{E}[XY]$. Thus, while expectation ``ignores'' dependence, variance ``detects'' it—specifically, its linear component.
+
+To illustrate this distinction concretely, consider the following natural example based on a simple random experiment.
+
+\section*{A Coin-Toss Example: Dependent but Uncorrelated Variables}
+
+Toss a fair coin twice. The sample space is
+\[
+\Omega = \{HH, HT, TH, TT\},
+\]
+with each outcome having probability $1/4$. Define two random variables:
+
+\begin{itemize}
+\item $X =$ (number of heads) $-$ (number of tails).  
+    Thus, $X = +2$ for $HH$, $0$ for $HT$ or $TH$, and $-2$ for $TT$.
+    
+    \item $Y = \begin{cases}
+        +1 & \text{if both tosses are the same (i.e., } HH \text{ or } TT\text{)}, \\
+        -1 & \text{if the tosses differ (i.e., } HT \text{ or } TH\text{)}.
+    \end{cases}$
+\end{itemize}
+
+The joint distribution is summarized below:
+
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Outcome & $X$ & $Y$ & Probability \\
+\midrule
+$HH$ & $+2$ & $+1$ & $1/4$ \\
+$HT$ & $0$  & $-1$ & $1/4$ \\
+$TH$ & $0$  & $-1$ & $1/4$ \\
+$TT$ & $-2$ & $+1$ & $1/4$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Dependence}
+The variables are clearly dependent: if $Y = +1$ (tosses match), then $X$ must be $\pm 2$; if $Y = -1$ (tosses differ), then $X = 0$ with certainty. Formally,
+\[
+P(X = 0, Y = +1) = 0 \quad \text{but} \quad P(X = 0)P(Y = +1) = \frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4} \ne 0,
+\]
+so $X$ and $Y$ are \textbf{not independent}.
+
+\subsection*{Zero Correlation}
+Now compute the covariance:
+\[
+\mathbb{E}[X] = (+2)\cdot\frac{1}{4} + 0\cdot\frac{1}{2} + (-2)\cdot\frac{1}{4} = 0,
+\]
+\[
+\mathbb{E}[Y] = (+1)\cdot\frac{1}{2} + (-1)\cdot\frac{1}{2} = 0,
+\]
+\[
+\mathbb{E}[XY] = (+2)(+1)\cdot\frac{1}{4} + (0)(-1)\cdot\frac{1}{4} + (0)(-1)\cdot\frac{1}{4} + (-2)(+1)\cdot\frac{1}{4} = \frac{2}{4} - \frac{2}{4} = 0.
+\]
+Hence,
+\[
+\mathrm{Cov}(X, Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y] = 0 - 0 = 0.
+\]
+So $X$ and $Y$ are \textbf{uncorrelated}, despite being dependent.
+
+\section*{Implications for Sums}
+
+Now consider the sum $S = X + Y$. By linearity of expectation—\textit{which requires no independence}—we have
+\[
+\mathbb{E}[S] = \mathbb{E}[X] + \mathbb{E}[Y] = 0 + 0 = 0.
+\]
+
+However, the variance of $S$ is
+\[
+\mathrm{Var}(S) = \mathrm{Var}(X) + \mathrm{Var}(Y) + 2\,\mathrm{Cov}(X, Y) = \mathrm{Var}(X) + \mathrm{Var}(Y),
+\]
+because $\mathrm{Cov}(X, Y) = 0$. In this case, variances \textit{do} add—but \textit{not because $X$ and $Y$ are independent} (they are not!), but because they happen to be uncorrelated.
+
+This underscores a crucial point: **variance additivity depends on uncorrelatedness, not independence**. If we had chosen different functions of the coin tosses that were correlated, the covariance term would be nonzero, and the variance of the sum would reflect their interaction.
+
+\section*{Conclusion}
+
+Expectation is remarkably agnostic to dependence: the expected value of a sum is always the sum of expected values. Variance, however, encodes how variables fluctuate \textit{together}. While independence guarantees zero covariance, the converse is false—as our coin-toss example shows. Thus, when analyzing sums of random variables:
+
+\begin{itemize}
+\item Use linearity of expectation freely—even under complex dependence.
+    \item Exercise caution with variance: always consider possible covariance.
+\end{itemize}
+
+This distinction is not merely technical; it shapes how we model uncertainty, design experiments, and interpret data in statistics, machine learning, and the physical sciences.
+
+
+
+\section*{Dependence as Information Sharing (Shannon’s View)}
+
+In classical probability, two random variables \(X\) and \(Y\) are \textbf{statistically independent} if their joint distribution factors:
+\[
+P(X = x, Y = y) = P(X = x) \cdot P(Y = y) \quad \text{for all } x, y.
+\]
+If this fails \textit{anywhere}, they are \textbf{dependent}.
+
+But this is a \textit{mathematical} definition. The \textbf{philosophical and informational meaning}—thanks to \textbf{Claude Shannon’s information theory}—is more intuitive:
+
+\begin{quote}
+    \textbf{\(X\) and \(Y\) are dependent if observing one changes your knowledge (i.e., your probability assessment) about the other.}
+\end{quote}
+
+This change in knowledge is quantified as a \textbf{reduction in uncertainty}, and uncertainty is measured by \textbf{entropy}.
+
+\section*{Entropy: The Measure of Uncertainty}
+
+\begin{itemize}
+\item The \textbf{entropy} of \(X\), denoted \(H(X)\), is the average uncertainty (in bits) before observing \(X\):
+    \[
+    H(X) = -\sum_x P(x) \log_2 P(x).
+    \]
+    High entropy = high unpredictability.
+    
+    \item The \textbf{conditional entropy} \(H(X \mid Y)\) is the average uncertainty about \(X\) \textit{after} observing \(Y\).
+\end{itemize}
+
+If \(X\) and \(Y\) are \textbf{independent}, then knowing \(Y\) tells you \textit{nothing} about \(X\), so:
+\[
+H(X \mid Y) = H(X).
+\]
+
+But if they are \textbf{dependent}, then:
+\[
+H(X \mid Y) < H(X).
+\]
+Your uncertainty about \(X\) \textbf{decreases} once you know \(Y\).
+
+\section*{Mutual Information: The Shared Knowledge}
+
+The amount of uncertainty reduced is called the \textbf{mutual information} between \(X\) and \(Y\):
+\[
+I(X; Y) = H(X) - H(X \mid Y) = H(Y) - H(Y \mid X).
+\]
+
+\begin{itemize}
+\item \(I(X; Y) \geq 0\),
+    \item \(I(X; Y) = 0\) \textbf{if and only if} \(X\) and \(Y\) are independent,
+    \item Larger \(I(X; Y)\) means stronger dependence (more shared information).
+\end{itemize}
+
+Crucially, \textbf{mutual information captures \textit{any} kind of dependence}—linear, nonlinear, deterministic, or stochastic.
+
+\section*{Back to Our Coin-Toss Example}
+
+Recall:
+\begin{itemize}
+\item \(X =\) net heads minus tails,
+    \item \(Y = +1\) if tosses match, \(-1\) if they differ.
+\end{itemize}
+
+We saw that \(\mathrm{Cov}(X, Y) = 0\), so they are \textbf{uncorrelated}.
+
+But are they \textbf{informationally independent}?
+
+No. Consider:
+\begin{itemize}
+\item Before seeing \(Y\), \(X\) could be \(-2, 0,\) or \(+2\).
+    \item If you learn \(Y = -1\) (tosses differ), you know \textbf{with certainty} that \(X = 0\).
+    \item Your uncertainty about \(X\) drops from \(H(X) > 0\) to \(H(X \mid Y = -1) = 0\).
+\end{itemize}
+
+Thus, \(H(X \mid Y) < H(X)\), so \(I(X; Y) > 0\).
+
+\begin{center}
+    \textbf{They share information \(\rightarrow\) they are dependent}, even though correlation is zero.
+\end{center}
+
+\section*{Philosophical Implications}
+
+\begin{enumerate}
+    \item \textbf{Knowledge Is Probabilistic} \\
+    Learning isn’t about certainty—it’s about \textbf{updating beliefs}. Dependence means your belief about one variable \textit{should} change when you observe the other. Correlation misses this if the update isn’t linear.
+
+    \item \textbf{Correlation Is a Narrow Channel} \\
+    Mutual information measures \textit{total} shared information; correlation measures only the \textbf{linear component}. It’s like judging a symphony by its average pitch—you miss harmony, rhythm, and timbre.
+
+    \item \textbf{Causality Often Hides in Nonlinear Dependence} \\
+    Many causal mechanisms (e.g., thresholds, feedback loops, logical rules) create \textbf{nonlinear dependencies}. If we only test for correlation, we may conclude ``no link'' where a deep causal structure exists.
+
+    \item \textbf{Science Requires Richer Tools} \\
+    Relying solely on correlation encourages a \textbf{linear worldview}. But biology, economics, and social systems thrive on nonlinear interdependence. Information theory gives us a language to detect and quantify those links.
+\end{enumerate}
+
+\section*{A Deeper Unity}
+
+Shannon’s insight reveals a profound unity:  
+\begin{quote}
+    \textbf{Statistical dependence = information flow.}
+\end{quote}
+
+This reframes probability not just as a calculus of chance, but as a \textbf{calculus of knowledge}. Every time two variables are dependent, there is a channel—however subtle—through which information passes.
+
+Correlation is just one (limited) way to detect that channel. Mutual information, conditional entropy, and other information-theoretic tools let us \textbf{listen more carefully}.
+
+\section*{In Summary}
+\begin{itemize}
+
+\item \textbf{Dependence} means: \textit{Knowing \(Y\) changes what you expect about \(X\).}
+    \item This change is a \textbf{reduction in uncertainty}, measured by entropy.
+    \item The amount of shared information is \textbf{mutual information} \(I(X;Y)\).
+    \item \textbf{Correlation can be zero even when \(I(X;Y) > 0\)}—because correlation only sees linear patterns.
+    \item Thus, \textbf{uncorrelated \(\ne\) independent}—not just mathematically, but \textbf{epistemologically}: the variables still ``speak'' to each other; we just need the right ears to hear it.
+\end{itemize}
+
+This is why modern data science increasingly turns to \textbf{information-theoretic methods} (like mutual information feature selection, entropy-based clustering, etc.)—to uncover the hidden conversations between variables that correlation silences.
+
+
+Let’s compute the \textbf{entropy} and \textbf{mutual information} for the coin-toss example:
+
+\begin{itemize}
+\item Toss a fair coin twice.
+    \item Define:
+        \item \(X =\) (number of heads) \(-\) (number of tails) \(\rightarrow X \in \{-2, 0, +2\}\)
+        \item \(Y = +1\) if tosses match (\(HH\) or \(TT\)), \(-1\) if they differ (\(HT\) or \(TH\))
+\end{itemize}
+
+From earlier, the joint distribution is:
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Outcome & \(X\) & \(Y\) & Probability \\
+\midrule
+HH      & +2   & +1   & 1/4         \\
+HT      & 0    & -1   & 1/4         \\
+TH      & 0    & -1   & 1/4         \\
+TT      & -2   & +1   & 1/4         \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{Step 1: Marginal Distribution of \(X\)}
+
+\begin{itemize}
+\item \(P(X = -2) = P(TT) = 1/4\)
+    \item \(P(X = 0) = P(HT \text{ or } TH) = 1/4 + 1/4 = 1/2\)
+    \item \(P(X = +2) = P(HH) = 1/4\)
+\end{itemize}
+
+So:
+\[
+P_X(-2) = \frac{1}{4}, \quad P_X(0) = \frac{1}{2}, \quad P_X(+2) = \frac{1}{4}
+\]
+
+\textbf{Entropy of \(X\)}:
+\[
+H(X) = -\sum_x P(x) \log_2 P(x) = -\left[ \frac{1}{4} \log_2 \frac{1}{4} + \frac{1}{2} \log_2 \frac{1}{2} + \frac{1}{4} \log_2 \frac{1}{4} \right]
+\]
+
+Compute:
+\begin{itemize}
+\item \(\log_2(1/4) = -2\)
+    \item \(\log_2(1/2) = -1\)
+\end{itemize}
+So:
+\[
+H(X) = -\left[ \frac{1}{4}(-2) + \frac{1}{2}(-1) + \frac{1}{4}(-2) \right] = -\left[ -\frac{2}{4} - \frac{1}{2} - \frac{2}{4} \right] = -\left[ -0.5 - 0.5 - 0.5 \right] = -(-1.5) = 1.5 \text{ bits}
+\]
+
+\[
+\boxed{H(X) = \frac{3}{2} \text{ bits}}
+\]
+
+\section*{Step 2: Marginal Distribution of \(Y\)}
+
+\begin{itemize}
+\item \(P(Y = +1) = P(HH \text{ or } TT) = 1/4 + 1/4 = 1/2\)
+    \item \(P(Y = -1) = P(HT \text{ or } TH) = 1/2\)
+\end{itemize}
+
+So \(Y\) is Bernoulli(1/2) over \(\{-1, +1\}\).
+
+\textbf{Entropy of \(Y\)}:
+\[
+H(Y) = -\left[ \frac{1}{2} \log_2 \frac{1}{2} + \frac{1}{2} \log_2 \frac{1}{2} \right] = -\left[ -\frac{1}{2} - \frac{1}{2} \right] = 1 \text{ bit}
+\]
+
+\[
+\boxed{H(Y) = 1 \text{ bit}}
+\]
+
+\section*{Step 3: Conditional Entropy \(H(X \mid Y)\)}
+
+We compute \(H(X \mid Y = y)\) for each \(y\), then average.
+
+\begin{itemize}
+    \item \textbf{When \(Y = +1\)} (probability
+\end{itemize}
+
+\end{document}

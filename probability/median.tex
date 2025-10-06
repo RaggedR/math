@@ -1,0 +1,300 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage{physics}
+\usepackage{enumitem}
+
+\begin{document}
+\Large
+
+\section*{Example: Grades Distribution with Median $<$ Mean and More Than Half Below Average}
+
+Consider the grades of 11 students (out of 100):
+
+\[
+40,\ 45,\ 50,\ 55,\ 60,\ 62,\ 65,\ 70,\ 75,\ 80,\ 100
+\]
+
+\subsection*{Median}
+Since there are 11 observations (odd number), the median is the 6th value:
+\[
+\text{Median} = 62
+\]
+
+\subsection*{Mean}
+The sum of the grades is:
+\[
+40 + 45 + 50 + 55 + 60 + 62 + 65 + 70 + 75 + 80 + 100 = 702
+\]
+Thus, the mean is:
+\[
+\text{Mean} = \frac{702}{11} \approx 63.82
+\]
+
+\subsection*{Comparison}
+\[
+\text{Median} = 62 \quad < \quad \text{Mean} \approx 63.82
+\]
+
+\subsection*{Students Below Average}
+Grades below the mean ($< 63.82$) are:
+\[
+40,\ 45,\ 50,\ 55,\ 60,\ 62
+\]
+This is 6 out of 11 students, or
+\[
+\frac{6}{11} \approx \SI{54.5}{\%}
+\]
+Hence, \textbf{more than half} of the students scored below the average.
+
+
+
+
+
+
+\section{The Mean as a Balance Point: An Analogy with Torque in Physics}
+
+In descriptive statistics, the \textbf{mean} of a data set is often described as its ``center of mass'' or ``balance point.'' This is not merely a figure of speech—it reflects a deep mathematical analogy with classical mechanics, particularly the concept of \textbf{torque} and rotational equilibrium. In this note, we elaborate on this connection, with special attention to the physical meaning of torque and how outliers in data behave like distant masses on a lever.
+
+\section{Torque in Classical Mechanics}
+
+In physics, \textbf{torque} (denoted $\boldsymbol{\tau}$) quantifies the tendency of a force to cause rotation about an axis or pivot point. 
+
+The torque vector $\boldsymbol{\tau}$ is defined as the cross product of the position vector $\mathbf{r}$ and the force vector $\mathbf{F}$:
+
+\[
+\boldsymbol{\tau} = \mathbf{r} \times \mathbf{F}
+\]
+
+where:
+\begin{itemize}
+\item $\mathbf{r}$ is the displacement vector from the pivot (axis of rotation) to the point of application of the force,
+    \item $\mathbf{F}$ is the applied force vector,
+    \item $\times$ denotes the vector cross product.
+\end{itemize}
+
+For a point mass or a force applied in a plane, the magnitude of torque is given by:
+
+\[
+\tau = r F \sin\theta
+\]
+
+where:
+\begin{itemize}
+\item $r$ is the distance from the pivot (fulcrum) to the point where the force is applied (the \textit{lever arm}),
+    \item $F$ is the magnitude of the applied force,
+    \item $\theta$ is the angle between the force vector $\vb{F}$ and the position vector $\vb{r}$.
+\end{itemize}
+
+
+In the common case where the force is applied \textit{perpendicular} to the lever arm (e.g., gravity acting downward on a horizontal seesaw), $\theta = 90^\circ$ and $\sin\theta = 1$, so the magnitude of torque simplifies to:
+\[
+\tau = r F
+\]
+However, torque is a vector quantity. Its direction is given by the right-hand rule applied to the cross product:
+\[
+\boldsymbol{\tau} = \mathbf{r} \times \mathbf{F}
+\]
+
+Consider a horizontal seesaw along the $x$-axis with pivot at the origin:
+\begin{itemize}
+\item If a downward force $\mathbf{F} = -F\,\hat{\mathbf{y}}$ is applied at a point on the \textbf{right} ($\mathbf{r} = +r\,\hat{\mathbf{x}}$, $r > 0$), then
+    \[
+    \boldsymbol{\tau} = (r\,\hat{\mathbf{x}}) \times (-F\,\hat{\mathbf{y}}) = -rF\,(\hat{\mathbf{x}} \times \hat{\mathbf{y}}) = -rF\,\hat{\mathbf{z}}
+    \]
+    The torque points in the $-\hat{\mathbf{z}}$ direction (into the page), corresponding to \textbf{clockwise} rotation.
+
+    \item If the same downward force is applied on the \textbf{left} ($\mathbf{r} = -r\,\hat{\mathbf{x}}$, $r > 0$), then
+    \[
+    \boldsymbol{\tau} = (-r\,\hat{\mathbf{x}}) \times (-F\,\hat{\mathbf{y}}) = +rF\,\hat{\mathbf{z}}
+    \]
+    The torque points in the $+\hat{\mathbf{z}}$ direction (out of the page), corresponding to \textbf{counterclockwise} rotation.
+\end{itemize}
+
+In two-dimensional problems, we often treat torque as a signed scalar:
+\[
+\tau = 
+\begin{cases}
+> 0 & \text{(counterclockwise)} \\
+< 0 & \text{(clockwise)}
+\end{cases}
+\]
+
+
+If the force arises from gravity acting on a mass $m$, then $F = mg$, where $g \approx \SI{9.8}{\meter\per\second\squared}$ is the acceleration due to gravity. Thus:
+
+\[
+\tau = r \cdot mg
+\]
+
+Since $g$ is constant, the torque is proportional to the product $r m$, often called the \textbf{first moment of mass} about the pivot.
+
+\subsection{Rotational Equilibrium}
+
+A rigid body is in \textbf{rotational equilibrium} when the net torque about the pivot is zero:
+
+\[
+\sum \tau_i = 0
+\]
+
+For a seesaw with multiple masses $m_i$ placed at positions $x_i$ along a horizontal beam, and assuming the pivot is at position $x_0$, the torque due to mass $i$ is:
+
+\[
+\tau_i = (x_i - x_0) \cdot m_i g
+\]
+
+(We adopt the sign convention that torques causing counterclockwise rotation are positive, and clockwise are negative; this is captured by the sign of $x_i - x_0$.)
+
+Setting the total torque to zero:
+
+\[
+\sum_{i=1}^n (x_i - x_0) m_i g = 0
+\quad \Rightarrow \quad
+\sum_{i=1}^n (x_i - x_0) m_i = 0
+\]
+
+Solving for the equilibrium pivot position $x_0$ gives:
+
+\[
+x_0 = \frac{\sum_{i=1}^n m_i x_i}{\sum_{i=1}^n m_i}
+\]
+
+This is precisely the formula for the \textbf{center of mass}. If all masses are equal (e.g., $m_i = 1$ for all $i$), then:
+
+\[
+x_0 = \frac{1}{n} \sum_{i=1}^n x_i = \bar{x}
+\]
+
+Thus, the \textbf{arithmetic mean} $\bar{x}$ is the center of mass of $n$ equal point masses located at the data values $x_i$.
+
+\section{Statistical Interpretation: Mean vs. Median}
+
+In statistics, for a data set $\{x_1, x_2, \dots, x_n\}$, the mean $\bar{x}$ satisfies:
+
+\[
+\sum_{i=1}^n (x_i - \bar{x}) = 0
+\]
+
+This is mathematically identical to the torque equilibrium condition with unit masses. Each deviation $(x_i - \bar{x})$ acts like a signed lever arm, and the sum of these ``torques'' vanishes.
+
+By contrast, the \textbf{median} is defined solely by order: it is the middle value when data are sorted. It does \textit{not} depend on the magnitude of deviations—only on counts. Hence, the median is unaffected by how far an outlier lies, just as the ``middle person'' on a line doesn’t move if someone at the end steps farther away.
+
+\section{The Role of Outliers: A Torque Analogy}
+
+Consider a class of 11 students with grades:
+\[
+40,\ 45,\ 50,\ 55,\ 60,\ 62,\ 65,\ 70,\ 75,\ 80,\ 100
+\]
+
+Most grades cluster between 40 and 80, but the score of 100 is an \textbf{outlier} on the high end.
+
+In the mechanical analogy:
+\begin{itemize}
+\item Each grade is a unit mass at position $x_i$ on a number line.
+    \item The outlier at $x = 100$ is far from the cluster, giving it a large lever arm relative to any pivot near the center.
+    \item Even though its mass is the same as the others, its \textbf{torque} $(x_i - x_0) \cdot 1$ is large in magnitude.
+    \item To achieve torque balance ($\sum \tau_i = 0$), the fulcrum (mean) must shift \textit{toward} the outlier.
+\end{itemize}
+
+Computationally:
+\[
+\bar{x} = \frac{702}{11} \approx 63.82, \quad \text{Median} = 62
+\]
+Thus, $\text{Median} < \text{Mean}$, and 6 of 11 students (54.5\%) score below the mean.
+
+This rightward shift of the mean mirrors how a heavy child sitting far out on a seesaw forces the pivot to move toward them to maintain balance.
+
+\section{Connection to Statistical Moments}
+
+The analogy extends beyond the first moment. In physics, the $k$-th moment of mass about a point is $\sum m_i r_i^k$. In statistics:
+\begin{itemize}
+\item The \textbf{first moment about zero} is $\frac{1}{n}\sum x_i = \bar{x}$ (mean).
+    \item The \textbf{second central moment} is $\frac{1}{n}\sum (x_i - \bar{x})^2$ (variance), analogous to rotational inertia.
+\end{itemize}
+
+Thus, the term ``moment'' in statistics is borrowed directly from mechanics—underscoring that this is more than metaphor; it is a shared mathematical framework.
+
+\section{Conclusion}
+
+The statement:
+\begin{quote}
+    ``Outliers pull the mean like a heavy weight on a lever creates torque, shifting the balance point.''
+\end{quote}
+is a physically grounded analogy. The mean is the point of zero net torque for unit masses at data locations. Outliers exert disproportionate influence because torque depends on \textit{distance}, not just mass. This explains why the mean is sensitive to extreme values, while the median—being purely ordinal—is not.
+
+Understanding this connection enriches both statistical intuition and physical reasoning.
+
+
+
+
+
+\section{Why Does Torque ``Point Out of the Page''?}
+
+Torque is a vector, but unlike force or velocity, its direction does not indicate motion \textit{in} that direction. Instead, the direction of the torque vector encodes the \textbf{axis} and \textbf{sense} (clockwise or counterclockwise) of rotation. This is done using the \textbf{right-hand rule}, and in two-dimensional problems, we often say torque ``points out of'' or ``into'' the page. This is a \textit{convention}—not a physical displacement.
+
+\section{The Right-Hand Rule}
+
+To find the direction of the torque vector $\boldsymbol{\tau} = \mathbf{r} \times \mathbf{F}$:
+
+\begin{enumerate}[label=\arabic*.]
+    \item Point the fingers of your \textbf{right hand} in the direction of the position vector $\mathbf{r}$ (from pivot to point of force).
+    \item Curl your fingers toward the direction of the force $\mathbf{F}$ (through the smaller angle).
+    \item Your extended \textbf{thumb} now points in the direction of $\boldsymbol{\tau}$.
+\end{enumerate}
+
+In a planar (2D) situation—like a seesaw lying flat on the page—the rotation occurs in the $xy$-plane. The torque vector is therefore perpendicular to this plane, i.e., along the $z$-axis.
+
+\section{Representing 3D Directions on a 2D Page}
+
+Since we draw on flat paper, we use special symbols to represent vectors perpendicular to the page:
+
+\begin{itemize}
+\item $\odot$: Arrow \textbf{coming out of the page} (toward you).  
+    Think of the dot as the tip of an arrow pointing at your eye.
+    
+    \item $\otimes$: Arrow \textbf{going into the page} (away from you).  
+    Think of the cross as the tail feathers of an arrow flying away.
+\end{itemize}
+
+These correspond to:
+\[
+\odot \; \leftrightarrow \; +\hat{\mathbf{z}} \quad \text{(out of page)}, \qquad
+\otimes \; \leftrightarrow \; -\hat{\mathbf{z}} \quad \text{(into page)}.
+\]
+
+\section{Example: A Horizontal Seesaw}
+
+Consider a seesaw along the $x$-axis, with pivot at the origin. Gravity acts downward ($-\hat{\mathbf{y}}$).
+
+\begin{itemize}
+\item \textbf{Mass on the left} ($x < 0$):  
+    The seesaw rotates \textbf{counterclockwise}.  
+    Right-hand rule → thumb points \textbf{out of the page}.  
+    \[
+    \boldsymbol{\tau} = +|\tau|\,\hat{\mathbf{z}} \quad \text{or} \quad \tau = \odot
+    \]
+
+    \item \textbf{Mass on the right} ($x > 0$):  
+    The seesaw rotates \textbf{clockwise}.  
+    Right-hand rule → thumb points \textbf{into the page}.  
+    \[
+    \boldsymbol{\tau} = -|\tau|\,\hat{\mathbf{z}} \quad \text{or} \quad \tau = \otimes
+    \]
+\end{itemize}
+
+\section{Why Use This Convention?}
+
+We could simply say ``clockwise'' or ``counterclockwise'' in 2D—but in three dimensions, rotation can occur about \textit{any axis}. Representing torque as a vector:
+\begin{itemize}
+\item Allows us to use vector addition (e.g., multiple torques on a rigid body),
+    \item Makes rotational dynamics consistent with linear dynamics (e.g., $\boldsymbol{\tau} = I\boldsymbol{\alpha}$),
+    \item Unambiguously specifies both axis and direction of rotation.
+\end{itemize}
+
+\section*{Key Takeaway}
+
+\begin{quote}
+    \textbf{Torque does not physically push out of the page.} The vector direction is a mathematical convention that encodes the axis and sense of rotation via the right-hand rule.
+\end{quote}
+
+\end{document}

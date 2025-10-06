@@ -15,11 +15,15 @@
 Two events are said to be \emph{independent} if:
 \[ P(A \cap B) = P(A)P(B)\]
 
-Mutually exclusive events are never independent. In this section we look at experiments involving the rolling of two dice and give two examples of independent events and two examples of dependent events.
+Mutually exclusive events are never independent. In this section we look at dice rolling experiments which are both dependent and independent. 
 
 The key point is that when events or \emph{not} independent the conditional probability doesn't equal the ``raw'' probability:
-\[ P(A | B) \neq P(A) \]
+\[ P(B | A) \neq P(B) \]
 In other words, knowing that $B$ occured gives you some predictive knowledge over whether $A$ will occur.
+The more general formula is:
+\[ P(A \cap B) = P(A)P(B|A)\]
+
+
 
 
 \section*{Example 1: Sum Equals 7 and First Die is 6 [Independent]}
@@ -238,7 +242,6 @@ P(D \mid C) = \frac{P(C \cap D)}{P(C)} = \frac{0.0833}{0.3056} \approx 0.2727
 - Event \(D\) requires a high sum ($>10$).  
 - Event \(C\) ensures at least one die is 6.  
 - High sums are more likely if at least one die is 6, so knowing \(C\) occurred significantly increases the probability of \(D\), showing dependence.
-
 
 
 
