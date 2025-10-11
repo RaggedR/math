@@ -1,0 +1,130 @@
+
+\Large
+
+
+\chapter{Orthogonal Projections}
+
+A projection is a linear operator \( P \) satisfying \( P^2 = P \). One can think of \( P \) as a transformation that \textbf{fixes every vector in its column space}—that is, if \( \mathbf{v} \in \operatorname{Col}(P) \), then \( P\mathbf{v} = \mathbf{v} \). 
+
+Given any vector \( \mathbf{x} \), we can decompose it as  
+\[
+\mathbf{x} = P\mathbf{x} + (\mathbf{x} - P\mathbf{x}),
+\]  
+where:
+\begin{itemize}
+\item \( P\mathbf{x} \) is the \textbf{projected part}, lying in \( \operatorname{Col}(P) \);
+    \item \( \mathbf{x} - P\mathbf{x} \) is the \textbf{residual} (or error), which lies in the \textbf{null space} \( \operatorname{Nul}(P) \), because 
+    \[
+    P(\mathbf{x} - P\mathbf{x}) = P\mathbf{x} - P^2\mathbf{x} = P\mathbf{x} - P\mathbf{x} = \mathbf{0}.
+    \]
+\end{itemize}
+Thus, the entire space splits as a \textbf{direct sum}:  
+\[
+\mathbb{R}^n = \operatorname{Col}(P) \oplus \operatorname{Nul}(P).
+\]  
+Every vector can be written uniquely as a sum of a vector in the column space and a vector in the null space.
+
+An \textbf{orthogonal projection} can be described in two seemingly different ways:
+
+\begin{enumerate}
+    \item \textbf{Geometrically}: a projection \( P \) is orthogonal if its column space and null space are perpendicular, i.e.,  
+    \[
+    \operatorname{Col}(P) \perp \operatorname{Nul}(P).
+    \]
+
+    \item \textbf{Algebraically}: a projection \( P \) is orthogonal if it is symmetric, i.e.,  
+    \[
+    P^\top = P.
+    \]
+\end{enumerate}
+
+
+The purpose of this note is to \textbf{prove the equivalence of these two definitions}. That is, for any matrix \( P \) satisfying \( P^2 = P \), we will show:
+\[
+\operatorname{Col}(P) \perp \operatorname{Nul}(P) \quad \Longleftrightarrow \quad P^\top = P.
+\]
+
+
+
+
+
+
+\newpage
+
+\begin{theorem}[The Orthogonal Projection Theorem]
+Let \( P \) be a linear operator on \( \mathbb{R}^n \) such that \( P^2 = P \) (i.e., \( P \) is a projection).  
+Then the following are equivalent:
+\begin{enumerate}
+    \item \( P \) is an \textbf{orthogonal projection}, meaning \( \operatorname{Col}(P) \perp \operatorname{Nul}(P) \);
+    \item \( P \) is \textbf{symmetric}, i.e., \( P^\top = P \).
+\end{enumerate}
+In other words, for a projection, symmetry is equivalent to orthogonality of the column and null spaces.
+\end{theorem}
+
+\begin{proof}
+We prove both directions.
+
+\medskip
+\noindent\textbf{(1) Symmetry \( \implies \) Orthogonality.}  
+Assume \( P^2 = P \) and \( P^\top = P \).  
+By the Fundamental Theorem of Linear Algebra,
+\[
+\operatorname{Col}(P)^\perp = \operatorname{Nul}(P^\top).
+\]
+Since \( P \) is symmetric, \( P^\top = P \), so \( \operatorname{Nul}(P^\top) = \operatorname{Nul}(P) \). Hence,
+\[
+\operatorname{Col}(P)^\perp = \operatorname{Nul}(P),
+\]
+which means \( \operatorname{Col}(P) \perp \operatorname{Nul}(P) \). Thus, \( P \) is an orthogonal projection.
+
+\medskip
+\noindent\textbf{(2) Orthogonality \( \implies \) Symmetry.}  
+Assume \( P^2 = P \) and \( \operatorname{Col}(P) \perp \operatorname{Nul}(P) \).  
+Then \( \operatorname{Nul}(P) = \operatorname{Col}(P)^\perp \). Again by the Fundamental Theorem,
+\[
+\operatorname{Col}(P)^\perp = \operatorname{Nul}(P^\top),
+\]
+so we obtain
+\[
+\operatorname{Nul}(P) = \operatorname{Nul}(P^\top).
+\]
+
+To show \( P = P^\top \), it suffices to verify that for all vectors \( \mathbf{x}, \mathbf{y} \in \mathbb{R}^n \),
+\[
+\mathbf{x}^\top P \mathbf{y} = \mathbf{x}^\top P^\top \mathbf{y}.
+\]
+
+Because \( P \) is an orthogonal projection, every vector decomposes orthogonally as
+\[
+\mathbf{z} = P\mathbf{z} + (\mathbf{z} - P\mathbf{z}), \quad \text{with } P\mathbf{z} \in \operatorname{Col}(P),\; \mathbf{z} - P\mathbf{z} \in \operatorname{Nul}(P).
+\]
+
+Now consider arbitrary \( \mathbf{x}, \mathbf{y} \). Since \( \mathbf{x} - P\mathbf{x} \in \operatorname{Nul}(P) \) and \( P\mathbf{y} \in \operatorname{Col}(P) \), orthogonality gives
+\[
+(\mathbf{x} - P\mathbf{x})^\top P\mathbf{y} = 0
+\quad\Longrightarrow\quad
+\mathbf{x}^\top P\mathbf{y} = (P\mathbf{x})^\top P\mathbf{y}. \tag{*}
+\]
+
+Similarly, \( P\mathbf{x} \in \operatorname{Col}(P) \) and \( \mathbf{y} - P\mathbf{y} \in \operatorname{Nul}(P) \) are orthogonal, so
+\[
+(P\mathbf{x})^\top (\mathbf{y} - P\mathbf{y}) = 0
+\quad\Longrightarrow\quad
+(P\mathbf{x})^\top \mathbf{y} = (P\mathbf{x})^\top P\mathbf{y}. \tag{**}
+\]
+
+From (*) and (**), we conclude
+\[
+\mathbf{x}^\top P\mathbf{y} = (P\mathbf{x})^\top \mathbf{y} = \mathbf{x}^\top P^\top \mathbf{y}.
+\]
+Since this holds for all \( \mathbf{x}, \mathbf{y} \), it follows that \( P = P^\top \).
+
+\medskip
+Thus, the two conditions are equivalent.
+\end{proof}
+
+
+
+
+
+

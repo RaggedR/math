@@ -315,7 +315,392 @@ H(Y) = -\left[ \frac{1}{2} \log_2 \frac{1}{2} + \frac{1}{2} \log_2 \frac{1}{2} \
 We compute \(H(X \mid Y = y)\) for each \(y\), then average.
 
 \begin{itemize}
-    \item \textbf{When \(Y = +1\)} (probability
+\item \textbf{When \(Y = +1\)} (probability 1/2):  
+    Outcomes: \(HH\) → \(X = +2\), \(TT\) → \(X = -2\)  
+    So \(P(X = +2 \mid Y = +1) = \frac{1/4}{1/2} = 1/2\),  
+    \(P(X = -2 \mid Y = +1) = 1/2\),  
+    \(P(X = 0 \mid Y = +1) = 0\)
+
+    Entropy:
+    \[
+    H(X \mid Y = +1) = -\left[ \frac{1}{2} \log_2 \frac{1}{2} + \frac{1}{2} \log_2 \frac{1}{2} \right] = 1 \text{ bit}
+    \]
+
+    \item \textbf{When \(Y = -1\)} (probability 1/2):  
+    Outcomes: \(HT, TH\) → both give \(X = 0\)  
+    So \(P(X = 0 \mid Y = -1) = 1\)
+
+    Entropy:
+    \[
+    H(X \mid Y = -1) = -[1 \cdot \log_2 1] = 0 \text{ bits}
+    \]
 \end{itemize}
+Now average:
+\[
+H(X \mid Y) = P(Y = +1) H(X \mid Y = +1) + P(Y = -1) H(X \mid Y = -1) = \frac{1}{2}(1) + \frac{1}{2}(0) = 0.5 \text{ bits}
+\]
+
+\[
+\boxed{H(X \mid Y) = \frac{1}{2} \text{ bit}}
+\]
+
+\section*{Step 4: Mutual Information \(I(X; Y)\)}
+
+\[
+I(X; Y) = H(X) - H(X \mid Y) = \frac{3}{2} - \frac{1}{2} = 1 \text{ bit}
+\]
+
+We can verify via \(H(Y) - H(Y \mid X)\):
+
+\begin{itemize}
+\item \textbf{When \(X = 0\)} (prob 1/2): then outcome is \(HT\) or \(TH\) → \(Y = -1\) with certainty → \(H(Y \mid X = 0) = 0\)
+    \item \textbf{When \(X = +2\)} (prob 1/4): outcome is \(HH\) → \(Y = +1\) → \(H(Y \mid X = +2) = 0\)
+    \item \textbf{When \(X = -2\)} (prob 1/4): outcome is \(TT\) → \(Y = +1\) → \(H(Y \mid X = -2) = 0\)
+\end{itemize}
+
+So \(H(Y \mid X) = 0\), and \(I(X; Y) = H(Y) - 0 = 1\) bit. \(\checkmark\) Consistent.
+
+\[
+\boxed{I(X; Y) = 1 \text{ bit}}
+\]
+
+\section*{Final Results}
+
+\begin{itemize}
+\item \(H(X) = 1.5\) bits  
+    \item \(H(Y) = 1\) bit  
+    \item \(H(X \mid Y) = 0.5\) bits  
+    \item \(H(Y \mid X) = 0\) bits  
+    \item \textbf{Mutual Information}: \(I(X; Y) = 1\) bit
+\end{itemize}
+
+\section*{Interpretation}
+
+\begin{itemize}
+\item Knowing \(Y\) reduces uncertainty about \(X\) by \textbf{1 bit} (from 1.5 to 0.5 bits).
+    \item Knowing \(X\) \textbf{completely determines} \(Y\) (since if \(X = 0\), \(Y = -1\); if \(X = \pm 2\), \(Y = +1\)), so \(H(Y \mid X) = 0\).
+    \item Despite \textbf{zero correlation}, there is \textbf{1 full bit of shared information}—a substantial dependence.
+\end{itemize}
+
+This quantifies the philosophical point: \textbf{uncorrelated does not mean unrelated}.
+
+
+
+
+
+
+
+
+
+\section*{Mutual Information Example: Dice Roll and Sum}
+
+Let \(X\) and \(Y\) be discrete random variables with joint distribution \(p(x,y)\), and marginals \(p(x)\), \(p(y)\).
+
+\begin{enumerate}
+    \item \textbf{Entropy} \\
+    Measures the average uncertainty in a random variable:
+    \[
+    H(X) = -\sum_{x} p(x) \log_2 p(x)
+    \]
+
+    \item \textbf{Conditional Entropy} \\
+    Average uncertainty in \(X\) given knowledge of \(Y\):
+    \[
+    H(X \mid Y) = -\sum_{y} p(y) \sum_{x} p(x \mid y) \log_2 p(x \mid y) 
+    = \sum_{x,y} p(x,y) \log_2 \frac{1}{p(x \mid y)}
+    \]
+
+    \item \textbf{Mutual Information} \\
+    Reduction in uncertainty about \(X\) due to knowing \(Y\) (symmetric):
+    \[
+    I(X;Y) = H(X) - H(X \mid Y) = H(Y) - H(Y \mid X)
+    \]
+    Equivalently, in terms of joint and marginals:
+    \[
+    I(X;Y) = \sum_{x,y} p(x,y) \log_2 \left( \frac{p(x,y)}{p(x)p(y)} \right)
+    \]
+\end{enumerate}
+All quantities are measured in \textbf{bits} (logarithm base 2).
+
+\section*{Natural Dice Example: One Die and the Sum of Two Dice}
+
+\subsection*{Setup}
+Roll two fair six-sided dice, denoted \(D_1\) and \(D_2\). Define:
+
+
+\begin{itemize}
+\item \(X = D_1\) (the outcome of the first die)
+    \item \(Y = D_1 + D_2\) (the sum of both dice)
+We compute \(I(X;Y)\): how much does knowing the sum tell us about the first die?
+\end{itemize}
+This is a natural dependence: for example, if \(Y = 2\), then \(X\) must be 1; if \(Y = 7\), then \(X\) could be any value from 1 to 6.
+
+\subsection*{Joint and Marginal Distributions}
+
+Since the dice are independent and fair,
+\[
+P(D_1 = x, D_2 = d) = \frac{1}{36}, \quad x,d \in \{1,\dots,6\}.
+\]
+Because \(Y = X + D_2\), we have
+\[
+p(x, y) = P(X = x, Y = y) =
+\begin{cases}
+\frac{1}{36} & \text{if } 1 \le x \le 6 \text{ and } 1 \le y - x \le 6, \\
+0 & \text{otherwise}.
+\end{cases}
+\]
+
+The marginal of \(X\) is uniform:
+\[
+p(x) = \frac{1}{6}, \quad x = 1,\dots,6.
+\]
+
+The marginal of \(Y\) (sum of two dice) is well known:
+\begin{center}
+\begin{tabular}{c|ccccccccccc}
+\(y\) & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 \\
+\midrule
+\(p(y)\) & \(\frac{1}{36}\) & \(\frac{2}{36}\) & \(\frac{3}{36}\) & \(\frac{4}{36}\) & \(\frac{5}{36}\) & \(\frac{6}{36}\) & \(\frac{5}{36}\) & \(\frac{4}{36}\) & \(\frac{3}{36}\) & \(\frac{2}{36}\) & \(\frac{1}{36}\)
+\end{tabular}
+\end{center}
+
+\subsection*{Computing Mutual Information}
+
+We use the identity:
+\[
+I(X;Y) = H(X) - H(X \mid Y).
+\]
+
+\subsubsection*{Entropy of \(X\)}
+Since \(X\) is uniform over 6 outcomes,
+\[
+H(X) = \log_2 6 \approx 2.58496 \text{ bits}.
+\]
+
+\subsubsection*{Conditional Entropy \(H(X \mid Y)\)}
+
+Given \(Y = y\), the possible values of \(X\) are those for which \(1 \le y - x \le 6\), i.e., \(x \in [\max(1, y-6), \min(6, y-1)]\). The number of such values is:
+\[
+n_y = 
+\begin{cases}
+1 & y = 2 \text{ or } 12, \\
+2 & y = 3 \text{ or } 11, \\
+3 & y = 4 \text{ or } 10, \\
+4 & y = 5 \text{ or } 9, \\
+5 & y = 6 \text{ or } 8, \\
+6 & y = 7.
+\end{cases}
+\]
+
+Because all valid \((x,y)\) pairs have equal probability (\(1/36\)), the conditional distribution \(p(x \mid y)\) is uniform over the \(n_y\) possibilities. Hence,
+\[
+H(X \mid Y = y) = \log_2 n_y.
+\]
+
+Therefore,
+\[
+H(X \mid Y) = \sum_{y=2}^{12} p(y) \log_2 n_y.
+\]
+
+Grouping symmetric terms:
+\[
+\begin{aligned}
+H(X \mid Y) &= \frac{2}{36} \cdot \log_2 1 
++ \frac{4}{36} \cdot \log_2 2 
++ \frac{6}{36} \cdot \log_2 3 
++ \frac{8}{36} \cdot \log_2 4 \\
+&\quad + \frac{10}{36} \cdot \log_2 5 
++ \frac{6}{36} \cdot \log_2 6.
+\end{aligned}
+\]
+
+Using \(\log_2 1 = 0\), \(\log_2 2 = 1\), \(\log_2 4 = 2\), and numerical values:
+\[
+\begin{aligned}
+\log_2 3 &\approx 1.58496, \\
+\log_2 5 &\approx 2.32193, \\
+\log_2 6 &\approx 2.58496,
+\end{aligned}
+\]
+we compute:
+\[
+\begin{aligned}
+H(X \mid Y) &\approx 
+\frac{4}{36}(1) 
++ \frac{6}{36}(1.58496) 
++ \frac{8}{36}(2) 
++ \frac{10}{36}(2.32193) 
++ \frac{6}{36}(2.58496) \\
+&= \frac{4}{36} + \frac{9.5098}{36} + \frac{16}{36} + \frac{23.2193}{36} + \frac{15.5098}{36} \\
+&= \frac{68.2389}{36} \approx 1.8955 \text{ bits}.
+\end{aligned}
+\]
+
+\subsubsection*{Mutual Information}
+
+Finally,
+\[
+I(X;Y) = H(X) - H(X \mid Y) \approx 2.58496 - 1.8955 = \boxed{0.6895 \text{ bits}}.
+\]
+
+\section*{Interpretation}
+
+- Initially, the first die has \(H(X) \approx 2.585\) bits of uncertainty.
+- After observing the sum \(Y\), uncertainty reduces to \(H(X \mid Y) \approx 1.896\) bits.
+- Thus, the sum reveals approximately \(0.69\) bits of information about the first die.
+- This reflects intuition: extreme sums (e.g., 2 or 12) fully determine \(X\), while moderate sums (e.g., 7) leave significant uncertainty.
+
+This example uses only standard, fair dice—no hidden variables or artificial constructions—and illustrates how mutual information quantifies dependence in a natural probabilistic setting.
+
+
+
+
+\section*{Mutual Information and Bayes' Theorem: \\ Information Gain from Bayesian Updating}
+
+Mutual information and Bayes' theorem are deeply connected:
+\begin{itemize}
+\item \textbf{Bayes' theorem} tells you how to update a \emph{single prior} \(P(X)\) to a \emph{posterior} \(P(X \mid Y = y)\) after observing a specific outcome \(Y = y\).
+    \item \textbf{Mutual information} \(I(X;Y)\) tells you the \emph{expected reduction in uncertainty} about \(X\) \emph{on average} over all possible outcomes \(y\), weighted by their likelihood.
+\end{itemize}
+
+
+In short:
+\begin{center}
+    \textbf{Mutual information = Expected information gain from Bayesian updating.}
+\end{center}
+
+\section*{Formal Connection}
+
+\subsection*{1. Bayes' Theorem and Information Gain for a Single Observation}
+
+Given a prior distribution \(P(X)\), observing \(Y = y\) yields the posterior via Bayes' rule:
+\[
+P(X \mid Y = y) = \frac{P(Y = y \mid X)\, P(X)}{P(Y = y)}.
+\]
+
+The \textbf{information gained} from this observation is measured by the Kullback–Leibler (KL) divergence from the prior to the posterior:
+\[
+D_{\mathrm{KL}}\big(P(X \mid Y = y) \,\|\, P(X)\big) 
+= \sum_{x} P(x \mid y) \log_2 \frac{P(x \mid y)}{P(x)}.
+\]
+This quantifies how much the belief about \(X\) changed due to seeing \(Y = y\).
+
+\subsection*{2. Mutual Information as Expected KL Divergence}
+
+Mutual information is the expectation of this KL divergence over all possible outcomes \(y\):
+\[
+\boxed{
+I(X;Y) = \mathbb{E}_{Y}\!\left[ D_{\mathrm{KL}}\big(P(X \mid Y) \,\|\, P(X)\big) \right]
+= \sum_{y} P(y) \sum_{x} P(x \mid y) \log_2 \frac{P(x \mid y)}{P(x)}.
+}
+\]
+
+Using \(P(x,y) = P(x \mid y) P(y)\), this is algebraically equivalent to the standard definition:
+\[
+I(X;Y) = \sum_{x,y} P(x,y) \log_2 \left( \frac{P(x,y)}{P(x) P(y)} \right).
+\]
+
+Thus, mutual information is precisely the \textbf{average information gain} from applying Bayes' rule.
+
+\section*{Interpretation}
+
+
+[leftmargin=*]\begin{itemize}
+    \item \textbf{KL divergence} \(D_{\mathrm{KL}}(P(X|y) \| P(X))\): \\
+    ``How many extra bits would I waste if I encoded \(X\) using the prior instead of the correct posterior?'' \\
+    -> This is the \emph{information gained} from observing \(Y = y\).
+
+    \item \textbf{Mutual information} \(I(X;Y)\): \\
+    ``On average, how many bits do I gain about \(X\) per observation of \(Y\)?'' \\
+    -> This is the \emph{expected information gain} from Bayesian updating.
+\end{itemize}
+
+\section*{Concrete Dice Example: Connecting Bayes + Mutual Information}
+
+Recall the setup:
+\begin{itemize}
+\item Roll two fair dice: \(D_1, D_2\).
+    \item Let \(X = D_1\) (first die), \(Y = D_1 + D_2\) (sum).
+    \item Prior: \(P(X = x) = \frac{1}{6}\) for \(x = 1,\dots,6\).
+\end{itemize}
+
+\subsection*{Bayesian Updating for Specific Observations}
+
+\begin{enumerate}
+    \item \textbf{Observe \(Y = 2\)}: \\
+    Only possible if \(D_1 = 1, D_2 = 1\). \\
+    Posterior: \(P(X = 1 \mid Y = 2) = 1\), others 0. \\
+    Information gain:
+    \[
+    D_{\mathrm{KL}}(P(X|2) \| P(X)) = \log_2 \frac{1}{1/6} = \log_2 6 \approx 2.585 \text{ bits}.
+    \]
+
+    \item \textbf{Observe \(Y = 7\)}: \\
+    All pairs \((1,6), (2,5), \dots, (6,1)\) equally likely. \\
+    Posterior: \(P(X = x \mid Y = 7) = \frac{1}{6}\) for all \(x\). \\
+    Information gain:
+    \[
+    D_{\mathrm{KL}}(P(X|7) \| P(X)) = \sum_{x=1}^6 \frac{1}{6} \log_2 \frac{1/6}{1/6} = 0 \text{ bits}.
+    \]
+\end{enumerate}
+
+\subsection*{Mutual Information as the Average Gain}
+
+Mutual information averages these gains over all possible sums:
+\[
+I(X;Y) = \sum_{y=2}^{12} P(Y = y) \cdot D_{\mathrm{KL}}\big(P(X \mid Y = y) \,\|\, P(X)\big).
+\]
+
+Using the known distribution of \(Y\):
+\begin{center}
+\begin{tabular}{c|ccccccccccc}
+\(y\) & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 \\
+\midrule
+\(P(Y=y)\) & \(\frac{1}{36}\) & \(\frac{2}{36}\) & \(\frac{3}{36}\) & \(\frac{4}{36}\) & \(\frac{5}{36}\) & \(\frac{6}{36}\) & \(\frac{5}{36}\) & \(\frac{4}{36}\) & \(\frac{3}{36}\) & \(\frac{2}{36}\) & \(\frac{1}{36}\) \\
+\(n_y\) (support size) & 1 & 2 & 3 & 4 & 5 & 6 & 5 & 4 & 3 & 2 & 1 \\
+\(D_{\mathrm{KL}}\) & \(\log_2 6\) & \(\log_2 3\) & \(\log_2 2\) & \(\log_2 \tfrac{4}{3}\)? & \dots & 0 & \dots & & & &
+\end{tabular}
+\end{center}
+
+More precisely, since \(P(X \mid Y = y)\) is uniform over \(n_y\) values,
+\[
+D_{\mathrm{KL}}\big(P(X \mid Y = y) \,\|\, P(X)\big) = \log_2 n_y - \log_2 6 = \log_2 \left( \frac{n_y}{6} \right) \quad \text{(but note: actually } = \log_2 n_y \text{ because prior entropy cancels in expectation)}.
+\]
+
+Carrying out the full calculation (as in the earlier example) yields:
+\[
+I(X;Y) \approx 0.6895 \text{ bits}.
+\]
+
+This is exactly the \textbf{expected information gain} from observing the sum and applying Bayes' rule.
+
+\section*{Why This Matters}
+
+[leftmargin=*]\begin{itemize}
+    \item \textbf{Bayesian inference}: Every Bayes update provides information; mutual information quantifies its average value.
+    \item \textbf{Experimental design}: Choose observations \(Y\) that maximize \(I(X;Y)\) to learn most about \(X\).
+    \item \textbf{Machine learning}: In variational inference, mutual information appears in bounds on model evidence.
+    \item \textbf{Cognitive science}: Models perception as Bayesian updating, with mutual information measuring sensory informativeness.
+\end{itemize}
+
+\section*{Summary}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Concept & Role \\
+\midrule
+Bayes' theorem & Updates prior \(P(X)\) → posterior \(P(X \mid Y = y)\) for a \emph{specific} \(y\). \\
+KL divergence \(D_{\mathrm{KL}}(P(X|y) \| P(X))\) & Information gained from that \emph{specific} update. \\
+Mutual information \(I(X;Y)\) & \emph{Expected} information gain over all \(y\). \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus, mutual information provides an \textbf{information-theoretic foundation for Bayesian learning}: it measures how much an observation is expected to teach us about the world.
+
+
+
+
 
 \end{document}
