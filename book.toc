@@ -7,3 +7,5 @@
 \contentsline {subsection}{\numberline {2.1.1}\Large The Four Fundamental Subspaces}{18}{}%
 \contentsline {subsection}{\numberline {2.1.2}\Large Some notation}{19}{}%
 \contentsline {chapter}{\numberline {3}Orthogonal Projections}{23}{}%
+\contentsline {section}{\numberline {3.1}Finding particular projection matrices}{26}{}%
+\contentsline {section}{\numberline {3.2}Higher Dimensions}{29}{}%
