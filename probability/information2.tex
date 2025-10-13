@@ -9,6 +9,12 @@
 \usepackage{hyperref}  % MUST be loaded for \texorpdfstring
 \geometry{margin=1in}
 
+
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+
 \title{Mutual Information of Dependent Random Variables}
 \author{}
 \date{}
@@ -411,8 +417,6 @@ This expresses that the conditional entropy is the \textbf{average remaining unc
 
 
 
-
-\newpage
 We are working now with non-independent random variables. Suppose we \textbf{first learn the value of $Y$}. How much uncertainty about $X$ remains?
 
 Let us first define:
@@ -536,7 +540,16 @@ Their \textbf{mutual information} quantifies exactly how much these summaries ov
 
 This is the power of information theory: it lets us \textbf{measure shared knowledge} between any two descriptions of the same experiment—whether they’re numbers, categories, or even words.
 
+\newpage
 
+
+
+
+
+
+
+
+\newpage
 
 
 
@@ -637,9 +650,324 @@ I(X;Y) = H(X) - H(X \mid Y)
 \end{quote}
 
 
+\section{Bayes' Theorem and KL-divergence}
+
+We have already met \textbf{Bayes' theorem} in a previous section.
+
+\begin{equation*} 
+\boxed{
+P_{X \mid Y}(x \mid y) = \frac{P_{Y \mid X}(y \mid x) \, P_X(x)}{P_Y(y)} }
+\end{equation*}
+
+\textbf{Bayes' theorem} tells you how to update a \emph{single prior} \(P_X(x)\) to a \emph{posterior} \(P_{X \mid Y}(x \mid y)\) after observing a specific outcome \(Y = y\).  
+The term in the denominator, \(P_Y(y)\), acts as a normalizing constant that ensures the posterior distribution sums to 1 over all possible values of \(x\).
+
+Bayes' theorem gives us a way to update beliefs in light of new evidence. To build intuition, consider the following scenario.
+
+\subsection*{Scenario}
+
+You hear a knock at your door at night. Before looking, you have beliefs about who might be there. You consider three possibilities:
+
+\begin{itemize}
+\item Neighbor
+    \item Delivery person
+    \item Intruder
+\end{itemize}
+
+You then look through the peephole and observe that the person is \textbf{wearing a uniform}. How should you update your beliefs?
+
+\subsection*{Step 1: Specify the Prior}
+
+Your initial beliefs (before seeing the uniform) are:
+
+\begin{align*}
+P(\text{neighbor}) &= 0.70, \\
+P(\text{delivery}) &= 0.20, \\
+P(\text{intruder}) &= 0.10.
+\end{align*}
+
+These are your \emph{prior probabilities}—what you believe before observing the evidence.
+
+\subsection*{Step 2: Specify the Likelihood}
+
+Next, assess how likely it is to see a uniform under each hypothesis:
+
+\begin{align*}
+P(\text{uniform} \mid \text{neighbor}) &= 0.10, \\
+P(\text{uniform} \mid \text{delivery}) &= 0.95, \\
+P(\text{uniform} \mid \text{intruder}) &= 0.05.
+\end{align*}
+
+These are the \emph{likelihoods}: the probability of the observed evidence given each possible cause.
+
+\subsection*{Step 3: Compute the Unnormalized Posterior}
+
+Bayes' theorem tells us that the posterior is proportional to likelihood times prior:
+
+\[
+P(\text{hypothesis} \mid \text{uniform}) \propto P(\text{uniform} \mid \text{hypothesis}) \cdot P(\text{hypothesis}).
+\]
+
+Compute this product for each hypothesis:
+
+\begin{align*}
+\text{Neighbor:}   &\quad 0.10 \times 0.70 = 0.070, \\
+\text{Delivery:}   &\quad 0.95 \times 0.20 = 0.190, \\
+\text{Intruder:}   &\quad 0.05 \times 0.10 = 0.005.
+\end{align*}
+
+\subsection*{Step 4: Normalize to Get the Posterior}
+
+The normalizing constant is the total probability of observing a uniform:
+
+\[
+P(\text{uniform}) = 0.070 + 0.190 + 0.005 = 0.265.
+\]
+
+Now divide each unnormalized value by this constant:
+
+\begin{align*}
+P(\text{neighbor} \mid \text{uniform}) &= \frac{0.070}{0.265} \approx 0.264 \quad (26.4\%), \\
+P(\text{delivery} \mid \text{uniform}) &= \frac{0.190}{0.265} \approx 0.717 \quad (71.7\%), \\
+P(\text{intruder} \mid \text{uniform}) &= \frac{0.005}{0.265} \approx 0.019 \quad (1.9\%).
+\end{align*}
+
+\subsection*{Interpretation}
+
+Even though you initially believed it was most likely your neighbor (70\% prior), the observation of a uniform strongly favors the delivery person. After updating:
+
+\begin{itemize}
+\item The probability it’s a \textbf{delivery person} rises to \textbf{71.7\%}.
+    \item The probability it’s your \textbf{neighbor} drops to \textbf{26.4\%}.
+    \item The chance of an \textbf{intruder} becomes very small (\textbf{1.9\%}).
+\end{itemize}
+
+This illustrates the power of Bayesian reasoning: \textbf{strong evidence can override even a strong prior belief} when the likelihoods differ substantially. Bayes' theorem gives us a precise, quantitative way to perform this kind of rational belief updating.
 
 
-\section*{Mutual Information and Bayes' Theorem: \\ Information Gain from Bayesian Updating}
+
+
+
+
+
+
+
+
+
+\section{Shannon’s source coding theorem}
+
+
+
+
+In 1948, Claude Shannon laid the foundation of information theory with his landmark paper \emph{A Mathematical Theory of Communication}. One of its central results is the \textbf{source coding theorem}, which establishes the fundamental limit of lossless data compression. The theorem states that for a discrete memoryless source emitting symbols according to a probability distribution \(P\), the \textbf{entropy}
+\[
+H(P) = -\sum_{x} P(x) \log_2 P(x)
+\]
+(in bits) is the minimum average number of bits per symbol required to represent the source without loss. No lossless code can compress below this limit, and codes can approach it arbitrarily closely by encoding long blocks of symbols.
+
+While Shannon’s theorem is existential—it guarantees that good codes exist—it does not specify how to construct them. This is where \textbf{Huffman encoding}, introduced by David Huffman in 1952, provides a practical, optimal solution for symbol-by-symbol coding.
+
+Huffman coding is a greedy algorithm that builds a \textbf{prefix-free binary code} (no codeword is a prefix of another) by repeatedly merging the two least probable symbols into a new node until a full binary tree is formed. The resulting code minimizes the expected codeword length among all prefix-free codes for the given symbol probabilities.
+
+\subsection*{Example: Huffman Coding in Action}
+
+
+
+
+
+
+\begin{tikzpicture}[
+    level distance=20mm,
+    sibling distance=25mm,
+    edge from parent/.style={draw, -latex},
+    every node/.style={font=\small},
+    prob/.style={fill=white, inner sep=1pt}
+]
+
+% Root
+\node (root) {1.0}
+    child {node (A) {0.5 \\ $A$}
+        edge from parent node[prob,left] {0}
+    }
+    child {node (Bnode) {0.5}
+        child {node (B) {0.25 \\ $B$}
+            edge from parent node[prob,left] {0}
+        }
+        child {node (CD) {0.25}
+            child {node (C) {0.125 \\ $C$}
+                edge from parent node[prob,left] {0}
+            }
+            child {node (D) {0.125 \\ $D$}
+                edge from parent node[prob,right] {1}
+            }
+            edge from parent node[prob,right] {1}
+        }
+        edge from parent node[prob,right] {1}
+    };
+
+% Add codeword labels below leaves
+\node[below=4pt of A] {codeword: 0};
+\node[below=4pt of B] {codeword: 10};
+\node[below=4pt of C] {codeword: 110};
+\node[below=4pt of D] {codeword: 111};
+
+\end{tikzpicture}
+
+
+
+
+
+
+
+
+
+
+
+Consider a source with four symbols and the following distribution:
+\[
+P(A) = 0.5,\quad P(B) = 0.25,\quad P(C) = 0.125,\quad P(D) = 0.125.
+\]
+
+\textbf{Step 1:} Combine the two least likely symbols, \(C\) and \(D\) (total probability \(0.25\)). \\
+\textbf{Step 2:} Combine this new node with \(B\) (both \(0.25\)) to form a node of probability \(0.5\). \\
+\textbf{Step 3:} Finally, combine with \(A\) (\(0.5\)) to complete the tree.
+
+Assigning 0 to left branches and 1 to right branches yields the codewords:
+\[
+A \to 0,\quad B \to 10,\quad C \to 110,\quad D \to 111.
+\]
+
+The average code length is:
+\[
+L_{\text{avg}} = 0.5(1) + 0.25(2) + 0.125(3) + 0.125(3) = 1.75 \text{ bits/symbol}.
+\]
+
+The entropy of the source is:
+\[
+H = -\big[0.5\log_2 0.5 + 0.25\log_2 0.25 + 2\cdot0.125\log_2 0.125\big] = 1.75 \text{ bits/symbol}.
+\]
+
+Here, Huffman coding \textbf{achieves the entropy exactly} because all probabilities are inverse powers of two—a rare but illustrative case.
+
+In general, Huffman coding satisfies:
+\[
+H(P) \leq L_{\text{avg}} < H(P) + 1.
+\]
+Thus, it is optimal for single-symbol coding but may fall short of the entropy by up to one bit per symbol. However, by applying Huffman coding to \textbf{blocks of \(n\) symbols}, the average length per symbol can be made arbitrarily close to \(H(P)\) as \(n \to \infty\), thereby fulfilling Shannon’s promise.
+
+In summary, \textbf{Shannon’s source coding theorem defines the ultimate limit of compression}, while \textbf{Huffman encoding provides an efficient, constructive method} that approaches this limit in practice. Together, they form the theoretical and algorithmic backbone of modern lossless compression—from ZIP files to PNG images.
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{KL-divergence}
+
+
+
+
+
+
+
+
+The Kullback--Leibler (KL) divergence, or relative entropy, is a cornerstone of information theory and statistical inference. It provides a precise way to quantify how one distribution differs from another. 
+
+It is important to note that KL-divergence is not a true distance metric because it is not symmetric and does not satisfy the triangle inequality. Nevertheless the concept KL divergence is extremely useful in information theory, statistics and machine learning.
+
+We will only be interested in the discrete case.
+
+\subsection{Definition and Formula (Discrete Case)}
+
+Let \( P \) and \( Q \) be two discrete probability distributions over the same finite or countable alphabet \( \mathcal{X} \). The KL divergence from \( Q \) to \( P \) is defined as:
+\[
+D_{\mathrm{KL}}(P \parallel Q) = \sum_{x \in \mathcal{X}} P(x) \log \frac{P(x)}{Q(x)}.
+\]
+
+We adopt the conventions:
+\begin{itemize}
+\item \( 0 \log \frac{0}{q} = 0 \) for any \( q \geq 0 \),
+    \item \( p \log \frac{p}{0} = +\infty \) for any \( p > 0 \).
+\end{itemize}
+
+This ensures the divergence is well-defined and reflects the impossibility of assigning zero probability to an event that actually occurs under \( P \).
+
+\subsection{Interpretation: Wasted Bits from Using the Wrong Code}
+
+One of the most illuminating interpretations of KL divergence arises from Shannon’s source coding theorem. Suppose a source emits symbols according to the true distribution \( P \), but we design a prefix-free code assuming the distribution is \( Q \). The optimal expected code length for a symbol under the true distribution is the entropy:
+\[
+H(P) = -\sum_{x} P(x) \log P(x).
+\]
+
+However, if we encode using a code optimized for \( Q \), the expected length becomes:
+\[
+\mathbb{E}_P[-\log Q(X)] = -\sum_{x} P(x) \log Q(x).
+\]
+
+The difference between these two expectations is exactly the KL divergence:
+\[
+D_{\mathrm{KL}}(P \parallel Q) = \mathbb{E}_P[-\log Q(X)] - H(P).
+\]
+Indeed,
+\begin{eqnarray*}
+\mathbb{E}_P[-\log Q(X)] - H(P) 
+&=& -\sum_x P(x) \log Q(x) + \sum_x P(x) \log P(x) \\
+&=& \sum_x P(x) \bigl( \log P(x) - \log Q(x) \bigr) \\
+&=& \sum_x P(x) \log \frac{P(x)}{Q(x)} \\
+&=& D_{\mathrm{KL}}(P \parallel Q).
+\end{eqnarray*}
+
+Thus, \textbf{KL divergence measures the average number of extra bits per symbol wasted by encoding data from \( P \) using a code built for \( Q \)}. This inefficiency is always non-negative (Gibbs’ inequality), and it vanishes only when \( P = Q \).
+
+
+\subsection{Connection to Conditional Entropy and Mutual Information}
+
+KL divergence is intimately linked to other core information-theoretic quantities. A key example is \textbf{mutual information} between two discrete random variables \( X \) and \( Y \). Mutual information can be expressed as a KL divergence between the joint distribution \( P_{X,Y} \) and the product of the marginals \( P_X P_Y \):
+\[
+I(X;Y) = D_{\mathrm{KL}}\big(P_{X,Y} \parallel P_X P_Y\big).
+\]
+
+This shows that mutual information quantifies how much the joint behavior of \( X \) and \( Y \) deviates from statistical independence.
+
+Alternatively, mutual information is also given by the reduction in uncertainty:
+\[
+I(X;Y) = H(X) - H(X|Y),
+\]
+where the \textbf{conditional entropy} \( H(X|Y) \) is defined as:
+\[
+H(X|Y) = -\sum_{x,y} P(x,y) \log P(x|y).
+\]
+
+The connection between these two expressions becomes clear when we expand the KL divergence:
+\begin{align*}
+I(X;Y) &= D_{\mathrm{KL}}\big(P_{X,Y} \parallel P_X P_Y\big) \\
+&= \sum_{x,y} P(x,y) \log \frac{P(x,y)}{P(x)P(y)} \\
+&= \sum_{x,y} P(x,y) \log \frac{P(x|y)}{P(x)} \\
+&= \sum_{x,y} P(x,y) \big[ \log P(x|y) - \log P(x) \big] \\
+&= \underbrace{-\sum_{x,y} P(x,y) \log P(x)}_{H(X)} \;-\; \underbrace{\big(-\sum_{x,y} P(x,y) \log P(x|y)\big)}_{H(X|Y)} \\
+&= H(X) - H(X|Y).
+\end{align*}
+
+This derivation reveals that the KL divergence formulation and the conditional entropy formulation are mathematically identical—just two perspectives on the same quantity. The KL view emphasizes \textbf{dependence as deviation from independence}, while the entropy view emphasizes \textbf{information gain through observation}.
+
+\subsection{Conclusion}
+
+In the discrete setting, KL divergence serves as a rigorous measure of informational inefficiency and distributional mismatch. Whether interpreted as wasted bits in coding, a tool for model selection, or the foundation of mutual information, it provides a unifying framework for understanding uncertainty and dependence. Its asymmetry is not a limitation but a reflection of the directional nature of information loss: assuming the wrong model has consequences that depend critically on which distribution is ``true'' and which is ``assumed.'' As such, KL divergence remains indispensable in information theory, statistics, and modern machine learning.
+
+
+
+
+
+
+
+\section*{Information Gain from Bayesian Updating}
 
 Mutual information and Bayes' theorem are deeply connected:
 \begin{itemize}
@@ -689,17 +1017,17 @@ Thus, mutual information is precisely the \textbf{average information gain} from
 \section*{Interpretation}
 
 
-[leftmargin=*]\begin{itemize}
+\begin{itemize}
     \item \textbf{KL divergence} \(D_{\mathrm{KL}}(P(X|y) \| P(X))\): \\
     ``How many extra bits would I waste if I encoded \(X\) using the prior instead of the correct posterior?'' \\
-    -> This is the \emph{information gained} from observing \(Y = y\).
+    This is the \emph{information gained} from observing \(Y = y\).
 
     \item \textbf{Mutual information} \(I(X;Y)\): \\
     ``On average, how many bits do I gain about \(X\) per observation of \(Y\)?'' \\
-    -> This is the \emph{expected information gain} from Bayesian updating.
+    This is the \emph{expected information gain} from Bayesian updating.
 \end{itemize}
 
-\section*{Concrete Dice Example: Connecting Bayes + Mutual Information}
+\subsection{Concrete Dice Example: Connecting Bayes + Mutual Information}
 
 Recall the setup:
 \begin{itemize}
@@ -707,6 +1035,11 @@ Recall the setup:
     \item Let \(X = D_1\) (first die), \(Y = D_1 + D_2\) (sum).
     \item Prior: \(P(X = x) = \frac{1}{6}\) for \(x = 1,\dots,6\).
 \end{itemize}
+
+
+
+
+
 
 \subsection*{Bayesian Updating for Specific Observations}
 
